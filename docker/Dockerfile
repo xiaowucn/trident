@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM registry.cheftin.cn/p/trident-py312-runtime as builder
+FROM --platform=$TARGETPLATFORM harbor.wujiaxing.top/library/trident-py312-runtime-arm64:latest as builder
 
 WORKDIR /opt/trident
 
@@ -17,7 +17,7 @@ RUN --mount=type=bind,source=./,target=/builder cp -a /builder/. /opt/trident/ &
     ./docker/cyc && \
     rm -rf ./docker/cyc config/*.yml
 
-FROM --platform=$TARGETPLATFORM registry.cheftin.cn/p/trident-py312-runtime
+FROM --platform=$TARGETPLATFORM harbor.wujiaxing.top/library/trident-py312-runtime-arm64:latest
 
 WORKDIR /opt/trident
 
