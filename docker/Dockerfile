@@ -39,11 +39,12 @@ RUN --mount=type=bind,from=builder,source=/opt/trident,target=/builder cp -a /bu
     DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y default-jre && \
     pip install --upgrade uv && \
     uv sync --group=ops && \
-    if [[ $(uname -i) == "aarch64" ]]; then \
-        printf 'skip install psycopg2-gauss on arm64 !!!!!!!!!' ; \
-    else \
-        uv pip install --index-url http://100.64.0.1:3141/cheftin/pypi --trusted-host 100.64.0.1 --target=/usr/lib/paoding/dist-packages/ psycopg2-gauss --upgrade --no-cache ; \
-    fi && \
+    # 修改点：移除了架构判断，统一安装psycopg2-gauss
+    uv pip install --index-url http://100.64.0.1:3141/cheftin/pypi \
+        --trusted-host 100.64.0.1 \
+        --target=/usr/lib/paoding/dist-packages/ \
+        psycopg2-gauss \
+        --upgrade --no-cache && \
     apt autoremove -y --purge \
         build-essential && \
     mkdir -p /var/lib/apt/lists/partial /data && \
