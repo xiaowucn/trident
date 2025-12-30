@@ -1,0 +1,121 @@
+sys: "gtja"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "41daa2a4088677d083328aea0711a282"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "a1I9NAIhoEtJo"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "TTwOTbWpK"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_mold: "管理Schema"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable_gtja"
+      secret_key: "hello_gtja"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  password_complexity: True  # 密码复杂度
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    scriber:
+      open: true
+      title: '文本信息抽取系统'
+    glazer:
+      open: true
+      title: '智能刷报'
+
+gtja_auth:
+  server: "https://sso.gtjapoc.net"
+  auth_uri: "/LinkSSOServer/SSOVerify"
+  app_id: "rwopKTn5umM="
+  des_key: "EMJ2HY+b2W6LuNUnO4uFW47+AoT/DdNl"
+  des_iv: "EZL7Pemc49o="
+  after_login: "/api/v1/get-off"
+
+gtja_auth_2:
+  server: "http://10.187.224.88:8091"
+  auth_uri: "/LinkSSOServer/ssoVerify"
+  get_public_key_uri: "/LinkSSOServer/getPublicKey"
+  app_id: "IBSHXT"
+
+kafka_config:
+  enable: True
+  topic: 'G_P_LINK_SSO_LOGOUT'
+  group_id:
+  servers: [ "10.187.96.160:9092","10.187.97.60:9092","10.187.96.193:9092" ]
+
+check_autodoc_permission:
+  preview:
+    "dou-test": ['1', '2', '3']
+    "dou-test1": ['1', '2']
+    "gtja_test1": ['0113-1', '0113-5', '0113-3']
+    "gtja_test2": ['0113-1', '0113-2', '0113-5', '0113-3']
+    "gtja_test3": ['0113-3', '0113-4']
+    "gtja_test4": ['0113-1', '0113-2', '0113-3']
+  edit:
+    "dou-test": ['4', '5', '6']
+    "dou-test1": ['7', '8']
+    "gtja_test1": ['0113-1', '0113-3' ]
+    "gtja_test2": ['0113-2', '0113-5', '0113-3' ]
+    "gtja_test3": [ '0113-2', '0113-3', '0113-4']
+    "gtja_test4": [ '0113-1', '0113-2']

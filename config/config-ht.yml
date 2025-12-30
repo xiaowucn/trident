@@ -1,0 +1,180 @@
+sys: "ht"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  traceback: False
+  http_port: 8000
+  redirect_subpath: ""
+  max_buffer_size: 1073741824  # 1GB
+  binary_json: True
+  binary_key: "781bcd7c393469c274e494ea3947d4f9"
+  abnormal_user_expired_time: 1209600  # 2 week
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "VrDJrh0KN109"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: ''
+    expire_seconds: 86400
+  auth_autodoc:
+    app_id: "autodoc"
+    secret_key: "show-me-the-money"
+    token_expire: 600
+    exclude_domain: True
+  autodoc_api:
+    host: ""
+    subpath: "autodoc/"
+  sqlalchemy:
+    echo: False
+  cache:
+    host: "redis"
+    password: ""
+    port: 6379
+    db: 1
+    expire: 7200
+  feature:
+    generate_auth_code: false
+    check_captcha: true
+    pdf2word: true
+    grater: false
+    fund_scriber: true
+
+custom:
+  faulty_wording_api: "http://100.64.0.7:65178/api/v1/adc/faulty-wording"
+  copy_record_api: "http://100.64.0.7:65178/api/v1/custom/copy-records"
+
+unify_auth:
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_autodoc_user_sync:
+    app_id: "autodoc"
+    secret_key: "show-me-the-money"
+    token_expire: 120
+    sync_enable: False
+    host: ""
+    subpath: "autodoc/"
+    auth_api: "/api/v1/ht-user/delete" # 同步删除ht-web autodoc用户
+    update_api: "/api/v1/ht-user/update" # 同步更新ldap autodoc用户
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: ""
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux_convert:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: ""
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login?redirect=convert"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      allowed_args: [ 'autodoc_task_types' ]
+    auth_scriber:  # 软开合同智能审核
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_fund_scriber:  #  基金合同智能审核
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber_fund/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+soap:
+  expires: 60
+  uri: http://172.190.103.203:8880/htesb
+  username: jrwbznyyfx
+  password: jrwbznyyfx123456
+  consumer_code: 91
+  interface_code: 290002
+  product_id: 742
+  sub_branch: 95
+  message: '【海通证券】验证码%s，欢迎登录e海智核！（验证码有效时间60s）'
+
+autodoc_task_types:
+  official: "official"
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '招股书全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'
+    pdflux:
+      open: true
+      title: 'PDF信息提取'
+    pdflux_convert:
+      open: true
+      title: 'PDF格式转换工具'
+    scriber:
+      open: true
+      title: '技术合同智能审核'
+    fund_scriber:
+      open: true
+      title: '基金合同智能审核'
+
+gtja_auth_2:
+  server: "http://10.187.224.88:8091"
+  auth_uri: "/LinkSSOServer/ssoVerify"
+  get_public_key_uri: "/LinkSSOServer/getPublicKey"
+  app_id: "IBSHXT"
+  use_test: False
+
+worker:
+  app_name: "trident"
+  broker: "redis://:@redis:6379/2"
+  enable: false
+  period_tasks:
+    sync_department_user:
+      minute: 0
+      hour: 0

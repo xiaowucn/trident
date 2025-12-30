@@ -1,0 +1,84 @@
+sys: "jhzq"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "tsapj762byxdmfqlvtnibh1urs03zzvn"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "DFFZDdy4Dp0uATQYvQ"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'DFFZDdy4Dp0uATQYvQ'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+    stat_user_operation: true  # 统计用户管理里用户相关操作
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "6326f0c737a543e9aa7bcb88dc0cbaf9"
+    token_expire: 120
+    exclude_domain: true
+
+custom:
+  user_log_url: "http://100.64.0.10:55730/autodoc/api/v1/jhzq/user/log"
+
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+  customer_permission:
+    super_admin:
+      autodoc_overall:
+        - admin
+    middle_background:
+      autodoc_overall:
+        - admin
+    investment:
+      autodoc_overall:
+        - normal
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  only_customer_permission: True  # 角色权限仅包含客户自定义权限环境
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  customer_role_permission_contrast:
+    super_admin: '业务管理员'
+    middle_background: '中后台角色'
+    investment: '投行条线角色'
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+
+

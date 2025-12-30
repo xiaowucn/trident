@@ -1,0 +1,123 @@
+sys: "fullgoal"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "pPK8Gy0f6Jqbr4rCGg"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    password: "b9Mb7gajgkzE3"
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+      admin_email: '邮件平台'
+      admin_ideal: '投研平台'
+      admin_phone: '电话录音平台'
+      admin_qtrade: 'Qtrade'
+      admin_sangfor: '深信服'
+      admin_wx: '企业微信'
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: ""
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  customer_login_api: '/fullgoal/oauth-login' # 未登录直接访问trident主页，跳转至客户认证界面接口
+  pd_env: false  # 未登录直接访问trident /#/login页，跳转至客户认证界面接口
+  internal: False  # 标记内部环境，用于区分内外环境登录、退出等差异
+  sub_sys_config:
+    calliper:
+      open: true
+      title: '文档智能对比'
+    pdflux:
+      open: true
+      title: 'PDF表格智能提取'
+    overall:
+      open: true
+      title: '合规信息审核'
+      captions: "针对内部各信息平台进行敏感词检测，基于检查到的不合规数据定期生成报告；同时也提供错别字核对工具对文件中的错别字、敏感词等进行检查。"
+    scriber:
+      open: true
+      title: '文本信息抽取系统'
+  customer_role_permission_contrast:
+    user_admin: '用户管理员'
+    role_admin: '角色管理员'
+
+use_customer_logout: True
+oa_auth_url: "https://iam.fullgoal.com.cn"
+
+oauth2_auth:
+  client_id: ""
+  client_secret: ""
+  base_url: "https://iam-uat.fullgoal.com.cn/esc-sso/"
+  authorize_api: "oauth2.0/authorize"
+  access_token_api: "oauth2.0/accessToken"
+  user_info_api: "oauth2.0/profile"
+  access_token_session_expire: 2592000 # 30d

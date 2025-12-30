@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body onload="document.Form1.submit()">
+<form name='Form1' method='post' action="{{ post_url }}">
+    <input name="IASID" type="hidden" value="{{ ias_id }}">
+    <input name="TimeStamp" type="hidden" value="{{ timestamp }}">
+    <input name="{{ ReturnURL }}" type="hidden" value="{{ return_url }}">
+    <input name="Authenticator" type="hidden" value="{{ auth_string }}">
+</form>
+</body>
+</html>

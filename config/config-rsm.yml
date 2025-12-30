@@ -1,0 +1,70 @@
+sys: "rsm"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "4b92e569d57fab0c44806606cac8d312"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "WnNG5eRhhqF67Q6wT9"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: "kCi24BiLq7gN"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "43a051e5023e4028baaad1afe42ff355"
+    token_expire: 300
+    token_single_effective: True
+    exclude_domain: true
+
+unify_auth:
+  permission:
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_grater:
+      app_id: "rsm_grater"
+      secret_key: "yU1DdSNPKk6V0hU0hw"
+      token_expire: 360
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+
+use_customer_logout: True
+oa_auth_url: "http://bankcheck.rsmchina.com.cn/"
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: False # 展示用户管理界面
+  internal: False  # 标记内部环境，用于区分内外环境登录、退出等差异
+  sub_sys_config:
+    overall:
+      open: false
+      title: '招股书全面复核'
+    calliper:
+      open: false
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'

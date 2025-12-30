@@ -1,0 +1,125 @@
+sys: "xyzq"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "fe6XulZ9DUvF"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "fe6XulZ9DUvF"
+    expire_seconds: 3600
+    check_wrong_password_times:
+      enable: True
+      login_failed_numbers: 5  # 密码输入错误次数
+      limit_seconds: 1800  # 限制时间内，密码次数超过5次，账号被锁定
+      lock_expired_seconds: 1800 # 账号锁定时间
+
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+    stat_user_operation: true  # 统计用户管理里用户相关操作
+    check_admin_password_expired:
+      enable: True
+      expire_seconds: 7776000 # 90天
+
+custom:
+  faulty_wording_api: "http://autodoc/api/v1/adc/faulty-wording"
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: False  # 是否展示角色管理界面
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      dep_admin: "部门管理员"
+      vip: "vip用户"
+      admin: "系统管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc_overall"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  allow_change_password: True  # 修改密码
+  user_manage: True # 展示用户管理界面
+  password_complexity: True  # 密码复杂度
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    glazer:
+      open: true
+      title: '智能撰写'
+
+# 新单点
+xyzq_auth_1:
+  auth_from: 'ehomessomain'
+  oa_sso_verify:
+    url: "http://192.25.101.80/cas/v3/sys/token/auth"
+  gipms_sso_verify:
+    url: "http://192.20.103.112:8092/api/sysManager/token/auth"
+
+xyzq_sync:
+  sys_id: ""
+  username: "aifh"  # 即调整后appId
+  password: "aifh@exa524d"  # 即调整后appSecret
+  sync_url: "http://192.25.105.100:22068/ESB/RESTHRService/GetEmployeeList"
+  dept_url: "http://192.25.105.100:22068/ESB/RESTHRService/GetOrganizationList"
+  sync_dept_ids: [ "100120", "100130", "100053", "100018", "385367" ]
+
+worker:
+  app_name: "trident"
+  broker: "redis://:fe6XulZ9DUvF@redis:6379/2"
+  enable: false
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 1

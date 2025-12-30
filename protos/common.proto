@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+message RPCRequest {
+    string key = 1;
+    string params = 2;
+    map<string, RequestFiles> files = 3;
+}
+
+message RequestFiles {
+    repeated RequestFile files = 1;
+}
+
+message RequestFile {
+    bytes body = 1;
+    string filename = 2;
+}
+
+message RPCReply {
+    int32 code = 1;
+    string message = 2;
+    string data = 3;
+    string type = 4;
+    bytes file = 5;
+    string text = 6;
+}

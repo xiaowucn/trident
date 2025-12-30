@@ -1,0 +1,80 @@
+sys: "guosen"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "kFA3C4dprQao"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+    increase_sync: False  # 增量推送用户, 第一次推送完成后改为True
+
+unify_auth:
+  show_role_manage: False  # 是否展示角色管理界面
+  check_sso_login_by_sync: True  # 根据同步的用户信息校验sso登录
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+    calliper:
+      admin: "管理员"
+      normal: "普通用户"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+guosen_auth:
+  IASID: "01"
+  IASKEY: "22362E7A9285DD53A0BBC2932F9733C505DC04EDBFE00D70"
+  POSTURL: "http://10.254.253.237/login.aspx"
+  USER_API: "http://sso-interface.guosen.com.cn/user.asmx"
+  AFTER_LOGIN: "api/v1/get-off"
+
+front_config:
+  user_manage: True # 展示用户管理界面
+  show_user_allow_login: True  # 用户管理里展示用户状态列
+  disabled_add_user: True  # 不显示新增用户按钮
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+      captions: "基于列表复核的错别字检查及勾稽关系复核，进行了展示优化，更清晰的展示了冲突的上下文联系；同时增加了表内复核、上下文一致性检查功能，进一步完善了金融文档复核功能。"
+    calliper:
+      open: true
+      title: '文档智能对比'
+      captions: "用于对比文档差异及对文档数据识别、纠错以及做出修改。"

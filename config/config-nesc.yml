@@ -1,0 +1,87 @@
+sys: "nesc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  key_prefix: 'paodingai_trident:'
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "P1c3CRzOWbMM"
+    db_name: "user_proxy"
+    quote_password: true
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'P1c3CRzOWbMM'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    dump_user_list: True
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+  customer_permission:
+    super_admin:
+      autodoc_overall:
+        - admin
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+nesc_auth:
+  investment_server: "http://192.18.25.119:8089"  # 投行系统
+  investment_user_info_api: '/DBZQTHCS/Project/IntelligentReview/login'
+  paper_server: "http://192.18.26.40"  # 底稿系统
+  paper_user_info_api: "/decryptPdToken"
+  after_login: "/api/v1/get-off?sys=autodoc_overall"
+  check_customer_login: True  # 校验用户状态开关
+  app_id: 'nesc_trident'  # 更新用户状态app_id
+  secret_key: '3598effd65c8452197a636ffc2ee4e5e' # 更新用户状态secret_key
+  auth_url: 'http://10.2.41.93/dbzqthcs/Project/IntelligentReview/GetUsersIsLock' # 校验用户状态url, 正式: http://192.18.25.119/DBZQTH/Project/IntelligentReview/GetUsersIsLock
+  special_login_id: 'admin_th'
+  token_expire: 300
+
+jwt_auth:
+  server: 'http://10.211.96.22:38776'  # 正式环境 http://192.18.27.106
+  idaas_api: '/enduser/sp/sso/testplugin_jwt161'  # /enduser/sp/sso/{应用ID}  正式环境 /enduser/sp/sso/dbzqplugin_jwt17
+  idaas_logout_api: '/public/sp/slo/testplugin_jwt161'  # /public/sp/slo/{应用ID}  正式环境 /public/sp/slo//dbzqplugin_jwt17
+  enterprise_id: 'test'  # 公司id 正式环境 dbzq
+  app_id: 'testplugin_jwt161'  # 应用ID 正式环境 dbzqplugin_jwt17
+  key_path: # 正式环境 'data/keys/cjsc_prod_rsa_public_key.json'
+
+front_config:
+  auto_redirect_sub_sys: True
+  allow_change_password: True  # 修改密码
+  internal: False  # 标记内部环境，用于区分内外环境登录、退出等差异
+  show_user_allow_login: True  # 用户管理里展示用户状态列
+  customer_login_api: '/nesc/jwt-login' # 未登录直接访问trident主页，跳转至客户认证界面接口
+  pd_env: false  # 未登录直接访问trident /#/login页，跳转至客户认证界面接口
+  customer_role_permission_contrast:
+    super_admin: '二级管理员'
+  sub_sys_config:
+    overall:
+      open: true
+      title: '招股书全面复核'

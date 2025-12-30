@@ -1,0 +1,204 @@
+sys: "ht"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8005
+  redirect_subpath: ""
+  debug_frontend_upstream: 'http://100.64.0.10:55730'
+#  http_secure_map: # 关闭不安全的http方法
+#    PUT: POST
+#    DELETE: POST
+  postgresql:
+    host: "127.0.0.1"
+    port: 35332
+    user: "postgres"
+    password: ""
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "127.0.0.1"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+custom:
+  faulty_wording_api: "http://100.64.0.7:65178/api/v1/adc/faulty-wording"
+
+unify_auth:
+  auto_create_user: True
+  enable_sys_require: False # 系统申请(需要管理员审核;总开关)
+  permission:
+    autodoc:
+      admin: "管理员"
+      proofread: "预审"
+      normal: "普通用户"
+    autodoc_overall:
+      admin: "管理员"
+      proofread: "预审"
+      normal: "普通用户"
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_user: "管理用户"
+      manage_mold: "管理Schema"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc:
+      need_require: False # 系统申请(需要管理员审核;子开关)
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://localhost:10001"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://localhost:10001"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://localhost:8087"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+rpc:
+  web:
+    enable: False
+    target: '127.0.0.1:50061'
+    port: 50061
+    manual_retry: True  # 手动重试
+    max_receive_message_length: 104857600
+    timeout: 20  # s
+    enable_retries: 1  # retry   0/1
+    keepalive:
+      enable: True
+      time: 30000  # ms
+      timeout: 20000  # ms
+      permit_without_calls: 1  # 0/1 开启空闲时间ping
+      max_pings_without_data: 0  # 空闲时间ping的最大数量, 0表示不限制
+      without_data: 10000  # ms 连续ping帧之间的最小允许时间
+      strikes: 2
+    retryThrottling:
+      maxTokens: 10
+      tokenRatio: 0.1
+
+ldap:
+  uri: ldap://bohr.cheftin.cn:389
+  search_base: ou=GS001,dc=openmicroscopy,dc=org
+  filter: (&(objectClass=inetOrgPerson)(uid=%s))
+  attrlist: ["o", "description", "cn"]
+  admin_dn: uid=admin,ou=system
+  admin_password: appwillgoogle
+
+cas_auth:
+  server: "http://172.15.4.98:33104"
+  cas_after_login: "/"
+  cas_after_logout: ""
+  login_uri: "/cas/sso/login"
+  logout_uri: "/cas/sso/logout"
+  system_name: 'ZNTH'
+  sso_crypt_key: 's2SnXL&XWShbD4&N'
+
+oauth2_auth:
+  client_id: "trident"
+  client_secret: ""
+  base_url: "https://sso:com/"
+  authorize_api: "profile/oauth2/authorize"
+  access_token_api: "profile/oauth2/accessToken"
+  user_info_api: "profile/oauth2/profile"
+
+ctsec:
+  user: # 获取用户列表
+    enable: true
+    server: 'http://localhost:9999'
+    uri: '/ums/api/external/allUsers'
+    headers:
+      appSecretKey: '9b40944c49ba4a15802f0a22258c0bce'
+      appSystemName: 'ZNTH'
+  department: # 获取用户列表
+    server: 'http://localhost:9999'
+    uri: '/ums/api/external/getDepartments'
+    headers:
+      appSecretKey: '9b40944c49ba4a15802f0a22258c0bce'
+      appSystemName: 'ZNTH'
+
+
+sso_auth_use: "casdoor_auth"
+casdoor_auth:
+  enable: false
+  org_name: "test"
+  client_id: "aa864cf27036a3916319"
+  secret: "e009aa02b0c74d7d96e9bb0e55652a68d6da451e"
+  endpoint: "http://127.0.0.1:7001"
+  user_sync_url: "/api/app-user-sync"
+  token_auth:
+     app_id: casdoor
+     secret_key: you-will-never-guess
+  cert: |
+    -----BEGIN CERTIFICATE-----
+    MIIE+TCCAuGgAwIBAgIDAeJAMA0GCSqGSIb3DQEBCwUAMDYxHTAbBgNVBAoTFENh
+    c2Rvb3IgT3JnYW5pemF0aW9uMRUwEwYDVQQDEwxDYXNkb29yIENlcnQwHhcNMjEx
+    MDE1MDgxMTUyWhcNNDExMDE1MDgxMTUyWjA2MR0wGwYDVQQKExRDYXNkb29yIE9y
+    Z2FuaXphdGlvbjEVMBMGA1UEAxMMQ2FzZG9vciBDZXJ0MIICIjANBgkqhkiG9w0B
+    AQEFAAOCAg8AMIICCgKCAgEAsInpb5E1/ym0f1RfSDSSE8IR7y+lw+RJjI74e5ej
+    rq4b8zMYk7HeHCyZr/hmNEwEVXnhXu1P0mBeQ5ypp/QGo8vgEmjAETNmzkI1NjOQ
+    CjCYwUrasO/f/MnI1C0j13vx6mV1kHZjSrKsMhYY1vaxTEP3+VB8Hjg3MHFWrb07
+    uvFMCJe5W8+0rKErZCKTR8+9VB3janeBz//zQePFVh79bFZate/hLirPK0Go9P1g
+    OvwIoC1A3sarHTP4Qm/LQRt0rHqZFybdySpyWAQvhNaDFE7mTstRSBb/wUjNCUBD
+    PTSLVjC04WllSf6Nkfx0Z7KvmbPstSj+btvcqsvRAGtvdsB9h62Kptjs1Yn7GAuo
+    I3qt/4zoKbiURYxkQJXIvwCQsEftUuk5ew5zuPSlDRLoLByQTLbx0JqLAFNfW3g/
+    pzSDjgd/60d6HTmvbZni4SmjdyFhXCDb1Kn7N+xTojnfaNkwep2REV+RMc0fx4Gu
+    hRsnLsmkmUDeyIZ9aBL9oj11YEQfM2JZEq+RVtUx+wB4y8K/tD1bcY+IfnG5rBpw
+    IDpS262boq4SRSvb3Z7bB0w4ZxvOfJ/1VLoRftjPbLIf0bhfr/AeZMHpIKOXvfz4
+    yE+hqzi68wdF0VR9xYc/RbSAf7323OsjYnjjEgInUtRohnRgCpjIk/Mt2Kt84Kb0
+    wn8CAwEAAaMQMA4wDAYDVR0TAQH/BAIwADANBgkqhkiG9w0BAQsFAAOCAgEAn2lf
+    DKkLX+F1vKRO/5gJ+Plr8P5NKuQkmwH97b8CS2gS1phDyNgIc4/LSdzuf4Awe6ve
+    C06lVdWSIis8UPUPdjmT2uMPSNjwLxG3QsrimMURNwFlLTfRem/heJe0Zgur9J1M
+    8haawdSdJjH2RgmFoDeE2r8NVRfhbR8KnCO1ddTJKuS1N0/irHz21W4jt4rxzCvl
+    2nR42Fybap3O/g2JXMhNNROwZmNjgpsF7XVENCSuFO1jTywLaqjuXCg54IL7XVLG
+    omKNNNcc8h1FCeKj/nnbGMhodnFWKDTsJcbNmcOPNHo6ixzqMy/Hqc+mWYv7maAG
+    Jtevs3qgMZ8F9Qzr3HpUc6R3ZYYWDY/xxPisuKftOPZgtH979XC4mdf0WPnOBLqL
+    2DJ1zaBmjiGJolvb7XNVKcUfDXYw85ZTZQ5b9clI4e+6bmyWqQItlwt+Ati/uFEV
+    XzCj70B4lALX6xau1kLEpV9O1GERizYRz5P9NJNA7KoO5AVMp9w0DQTkt+LbXnZE
+    HHnWKy8xHQKZF9sR7YBPGLs/Ac6tviv5Ua15OgJ/8dLRZ/veyFfGo2yZsI+hKVU5
+    nCCJHBcAyFnm1hdvdwEdH33jDBjNB6ciotJZrf/3VYaIWSalADosHAgMWfXuWP+h
+    8XKXmzlxuHbTMQYtZPDgspS5aK+S4Q9wb8RRAYo=
+    -----END CERTIFICATE-----
+
+
+htamc:
+  dubbo:
+    enable: True
+    service:
+      zk_host: "100.64.0.244:2181"  # 多个逗号分割
+      version: ""  # 优先取子项的version
+      timeout: 10
+      list_atoms_user:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: "listAtomsUser"
+        version: ""
+      list_reits_user:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: 'listReitsUser'
+        version: ""
+      get_user_data_and_permission:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: 'getUserDataAndPermission'
+        version: ""

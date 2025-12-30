@@ -1,0 +1,97 @@
+sys: "ht"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "127.0.0.1"
+    port: 35332
+    user: "postgres"
+    password: ""
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+custom:
+  faulty_wording_api: "http://100.64.0.7:65178/api/v1/adc/faulty-wording"
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    calliper:
+      normal: "普通用户"
+    pdflux:
+      normal: "普通用户"
+    autodoc:
+      normal: "普通用户"
+    autodoc_overall:
+      normal: "普通用户"
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_user: "管理用户"
+      manage_mold: "管理Schema"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://xa.cheftin.cn:1209"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pdflux"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://ampere.cheftin.com:5003"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://bohr.cheftin.cn:1081"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://100.64.0.7:65178"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable_ht_test"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://xa.cheftin.cn:1201"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+ldap:
+  uri: ldap://10.188.105.222:389
+  search_base: o=GS001,dc=htsec,dc=net
+  filter: (&(objectClass=DFStaff)(uid=%s))
+  attrlist: ["o", "unitdept", "cn"]
+  admin_dn: uid=ldapuser,o=GS001,dc=htsec,dc=net
+  admin_password: htzqTds

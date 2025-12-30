@@ -1,0 +1,15 @@
+<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+    <cas:authenticationSuccess>
+        <cas:user>zhaoxd1</cas:user>
+        <cas:attributes>
+            <cas:ding>ldap</cas:ding>
+            <cas:employeeNo>CSC11073</cas:employeeNo>
+            <cas:mobilePhone></cas:mobilePhone>
+            <cas:email></cas:email>
+            <cas:unitName></cas:unitName>
+            <cas:ouName>CN=,OU=DNBJ,OU=ZBBJ,DC=csctest,DC=local</cas:ouName>
+            <cas:cscPhone></cas:cscPhone>
+            <cas:realName></cas:realName>
+        </cas:attributes>
+    </cas:authenticationSuccess>
+</cas:serviceResponse>

@@ -1,0 +1,74 @@
+sys: "xyzq"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy8"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 8
+    expire_seconds: 3600
+    check_wrong_password_times:
+      enable: True
+      login_failed_numbers: 5  # 密码输入错误次数
+      limit_seconds: 1800  # 限制时间内，密码次数超过5次，账号被锁定
+      lock_expired_seconds: 300 # 账号锁定时间
+
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+    check_admin_password_expired:
+      enable: True
+      expire_seconds: 7776000 # 90天
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      dep_admin: "部门管理员"
+      vip: "vip用户"
+      admin: "系统管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+xyzq_auth:
+  after_login: "/api/v1/get-off?sys=autodoc_overall"
+  ehome_sso_verify:
+    url: "http://xa.cheftin.cn:1390/sso/ehome"
+  ib_sso_verify:
+    url: "http://192.25.101.47:8081/project_test/login/checksso"
+
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  allow_change_password: True  # 修改密码
+  user_manage: False # 展示用户管理界面
+  password_complexity: True  # 密码复杂度
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'

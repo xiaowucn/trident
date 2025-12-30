@@ -1,0 +1,249 @@
+sys: "ht"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  traceback: False
+  http_port: 8000
+  redirect_subpath: ""
+  max_buffer_size: 1073741824  # 1GB
+  binary_json: True
+  binary_key: "781bcd7c393469c274e494ea3947d4f9"
+  abnormal_user_expired_time: 1800  # 30 minutes
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "VrDJrh0KN109"
+    db_name: "trident"
+    check_interval: 60
+  auth_autodoc:
+    app_id: "autodoc"
+    secret_key: "show-me-the-money"
+    token_expire: 600
+    exclude_domain: True
+  autodoc_api:
+    host: "http://100.64.0.9:55832/"
+    subpath: "autodoc/"
+  sqlalchemy:
+    echo: False
+  cache:
+    host: "redis"
+    password: ""
+    port: 6379
+    db: 1
+    expire: 604800
+  feature:
+    generate_auth_code: false
+    check_captcha: true
+    pdf2word: true
+    grater: true
+    fund_scriber: true
+
+custom:
+  faulty_wording_api: "http://100.64.0.9:83/api/v1/adc/faulty-wording"
+  copy_record_api: "http://100.64.0.9:83/api/v1/custom/copy-records"
+
+unify_auth:
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_autodoc_user_sync:
+    app_id: "autodoc"
+    secret_key: "show-me-the-money"
+    token_expire: 120
+    sync_enable: False
+    host: "http://100.64.0.9:83"
+    subpath: "autodoc/"
+    auth_api: "/api/v1/ht-user/delete" # 同步删除ht-web autodoc用户
+    update_api: "/api/v1/ht-user/update" # 同步更新ldap autodoc用户
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://100.64.0.6:51091"
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://100.64.0.6:51091"
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux_convert:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://100.64.0.6:51091"
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login?redirect=convert"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      allowed_args: [ 'autodoc_task_types' ]
+    auth_scriber:  # 软开合同智能审核
+      app_id: "remarkable_ht_test"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://100.64.0.15:1201"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_fund_scriber:  #  基金合同智能审核
+      app_id: "scriber_ht_dev"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://100.64.0.3:22111"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://100.64.0.6:51091"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+ldap:
+  uri: ldap://100.64.0.1:389
+  search_base: ou=GS001,dc=openmicroscopy,dc=org
+  filter: (&(objectClass=inetOrgPerson)(uid=%s))
+  attrlist: ["o", "description", "cn"]
+  admin_dn: uid=admin,ou=system
+  admin_password: appwillgoogle
+
+command:
+  get_data:
+    domain: "https://10.10.9.252"
+    ssl_verify: False
+    account: "wenhao"
+    password: "2polEWIMhNkSl+SUw4OH+g=="
+    date_policy: "T-1"
+    fixed_user_path: ''
+    fixed_depart_path: ''
+    user_path: "BDP_IRS/OUT/#DATE#/t_edw_t01_employee_info#DATE#.csv"
+    depart_path: "BDP_IRS/OUT/#DATE#/t_edw_t03_inr_dept#DATE#.csv"
+    location: 1
+
+soap:
+  expires: 60
+  uri: http://172.190.103.203:8880/htesb
+  username: jrwbznyyfx
+  password: jrwbznyyfx123456
+  consumer_code: 91
+  interface_code: 290002
+  product_id:
+  sub_branch:
+  message: '【海通证券】验证码%s，欢迎登录e海智核！'
+
+autodoc_task_types:
+  ipo: "ipo,kechuang,growth"
+  bond: "bond,debt_financing"
+  neeq: "neeq,neeq_star"
+  official: "official"
+  inquiry: "inquiry"
+  allotment: "allotment,additional_issuance,convertible_bond"
+
+autodoc_check_types:
+  articulation: true
+  bond_quality: true
+  consistency: true
+  entity: true
+  faulty_wording: true
+  format_proof: true
+  inquiry: true
+  intable_formula: true
+  integrity: false
+  others: false
+  transaction_reference: false
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '招股书全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'
+    pdflux:
+      open: true
+      title: 'PDF信息提取'
+    pdflux_convert:
+      open: true
+      title: 'PDF格式转换工具'
+    scriber:
+      open: true
+      title: '技术合同智能审核'
+    fund_scriber:
+      open: true
+      title: '基金合同智能审核'
+
+# 集团oa单点
+sso_auth:
+  oa_server: "http://172.190.103.191:8080"  # oa服务地址
+  oa_domain: "ehtbtest.htsec.com"  # oa域名，用于判断是否同域
+  oa_login_uri: "/login-sso.jsp"  # oa界面
+  web_server: "http://172.190.103.203:8880/htesb/"  # WebService服务地址
+  web_service_uri: "sys/webservice/qksSsoWebService?wsdl"  # WebService地址
+  login_uri: "/"
+  auto_login: True  # 是否使用OA界面登录
+  rsa_key_path:   # rsa私钥文件地址
+  consumer_code: 40  # 智能审核系统编号
+  get_token_key_interface_code: 580001  # 获取Token的Cookie的Key名称接口编号
+  get_domain_interface_code: 580002  # 获取Token的Cookie的Domain名称接口编号
+  get_token_interface_code: 580003  # 根据用户名生成Token字符串接口编号
+  get_username_interface_code: 580004  # 根据Token字符串生成返回用户名接口编号
+  auth_interface_code: 580005  # 用户验证接口编号
+  app_name: "JRWBFX"  # 在系统中注册的接入系统ID
+  check_same_domain: False  # 是否支持同域认证方式
+  redirect_apps:
+    - pdflux
+    - pdflux_convert
+    - calliper
+
+# 投行oa单点
+ht_sso_auth:
+  sso_crypt_key: "apex.aas.app.webapi"
+  token_expired_time: 18000000 # 18000s
+
+external_system:
+  grand:  # 达观
+    base_server: "http://172.190.120.195"
+    subpath: "bankstatement/"
+    get_token_api: "api/bank_flow_htzq/token"
+    binary_key: "584a805aa1624a1aa5ef30be6f8bc86b"
+    admin_pwd: "2Jt6@jKk"
+
+gtja_auth_2:
+  server: "http://10.187.224.88:8091"
+  auth_uri: "/LinkSSOServer/ssoVerify"
+  get_public_key_uri: "/LinkSSOServer/getPublicKey"
+  app_id: "IBSHXT"
+  use_test: False
+
+worker:
+  app_name: "trident"
+  broker: "redis://:@redis:6379/2"
+  enable: false
+  period_tasks:
+    sync_department_user:
+      minute: 0
+      hour: 0

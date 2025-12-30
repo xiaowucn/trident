@@ -1,0 +1,119 @@
+sys: "icbccs"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "kub0RbsNAiQx"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "trident"
+    expire_seconds: 3600
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    exclude_domain: true
+
+unify_auth:
+  check_client_ip: False  # 单点登录接口中不进行IP校验
+  auto_create_user: True
+  show_role_manage: False  # 是否展示角色管理界面
+  sub_sys_simple_permissions:  # 新增子系统，默认角色和管理员角色中填充permission
+    finocr:
+      oa_default: [ "normal" ]
+      admin: ["admin"]
+  permission:
+    scriber_kv:
+      normal: "普通用户"
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    finocr:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber_kv:
+      app_id: "scriber_kv_prod"
+      secret_key: "hello_pdai"
+      token_expire: 120
+      host: "http://scriber_kv"
+      subpath: ""
+      auth_api: "api/v1/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_finocr:
+      app_id: "finocr"
+      secret_key: "hello_finocr"
+      token_expire: 120
+      host: "http://finocr"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  user_login_api: "/user/login"
+  allow_change_password: True # 修改密码
+  sub_sys_config:
+    scriber_kv:
+      open: true
+      title: "表单内容提取"
+    pdflux:
+      open: true
+      title: "表格智能提取"
+    calliper:
+      open: true
+      title: "文档智能对比"
+    finocr:
+      open: true
+      title: "通用OCR识别"
+
+icbccs_auth:
+  client_id: "fcv"
+  client_secret: "zyMUQB9uV5"
+  access_token_url: "http://10.29.39.237:10470"
+  dept_info_url: "http://10.29.40.153:24074"
+  user_info_url: "http://10.29.40.153:24073"
+  access_token_api: "/agent_api/oauth/pwd_get_token"
+  user_info_api: "/auth-server/oauth/check_token"
+  dept_info_api: "/user/user/innerUserInfo"
+  after_login: ""
+  permission_contrast:
+    cv-form: "scriber_kv"
+    cv-compare: "calliper"
+    cv-table: "pdflux"
+    cv-finocr: "finocr"
+  secret_key: "48487d8bb9f8bf8691c114dcee4d0219"

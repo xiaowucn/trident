@@ -1,0 +1,62 @@
+sys: "dxzq"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "xwWJJorksmc7g4"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'xwWJJorksmc7g4'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  sub_sys_config:
+    overall:
+      open: true
+      title: '招股书全面复核'
+    calliper:
+      open: false
+      title: '文档智能对比'
+    grater:
+      open: false
+      title: '银行流水识别'
+
+
+dxzq_auth:
+  server: 'https://10.249.64.88'
+  auth_uri: '/seeyon/thirdpartyController.do'

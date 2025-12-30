@@ -1,0 +1,68 @@
+sys: "swsc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "fb9HCwom1p8c"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+swsc_auth:
+  IASID: "01"
+  IASKEY: "22362E7A9285DD53A0BBC2932F9733C505DC04EDBFE00D70"
+  POSTURL: "http://10.254.253.237/login.aspx"
+  AFTER_LOGIN: ""
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'

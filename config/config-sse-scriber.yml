@@ -1,0 +1,61 @@
+sys: "sse"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "VrDJrh0KN109"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_user: "管理用户"
+      manage_mold: "管理Schema"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://localhost:8087"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+sse:
+  access_key: "access-key"  # 中台网关授权密钥分属各业务系统， 不得混用，不得外泄， 生产环境密钥请另行申请
+  token_check_url: "http://100.64.0.5:44720/calliper/api/v1/mock/token/check"
+  login_page_url: "http://100.64.0.15:1230/calliper/api/v1/mock/login/page"
+  service_address: "http://100.64.0.5:44720/calliper/api/v1/mock/token/check"
+  logout_url: "http://100.64.0.5:44720/calliper/api/v1/mock/logout"
+  guid: 189
+  redirect: "http://100.64.0.5:44720"
+
+front_config:
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '金融文本抽取系统'

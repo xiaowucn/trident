@@ -1,0 +1,118 @@
+sys: "piccamc"
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "a2dad3f8e058303aa7f559e4ffe1d95c"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "iZj5VqoZZEK5T2A"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: "iZj5VqoZZEK5T2A"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "6326f0c737a543e9aa7bcb88dc0cbaf9"
+    token_expire: 900
+    exclude_domain: true
+    token_single_effective: True
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True
+  allow_sys_admin_sso: False # 是否允许系统管理员使用单点登录
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      internal_host: "http://autodoc:8000/absdoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      allowed_args: [ 'autodoc_task_types' ]
+
+autodoc_task_types:
+  general: "general"  # 通用错别字审核-AutoDoc项目类型通用
+  abs_bond: "abs_bond,debt_plan,equity_plan,trust_plan,abs_plan"  # 组合类资管产品审核
+  procurement: "centralized_procurement,decentralized_procurement"  # 采购文档审核-AutoDoc项目类型采购文档
+  insurance_asset_management: "insurance_asset_management"  # 保险资管产品复核
+
+cas_auth:
+  internal_server: ""
+  server: "https://iamtest.picc.com" # 正式环境："https://iam.picc.com"
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  trident_auth_url: ""  # http://trident_host/api/v1/user/cas-login
+  cas_after_login: ""
+  cas_after_logout: ""
+  login_uri: "/ngiam-rst/cas/login"
+  logout_uri: ""
+  validate_uri: "/ngiam-rst/cas/serviceValidate"
+  cas_prefix: ''
+
+ldap_ad_auth:
+  ldap_uri: "ldap://10.7.2.201:389"
+  user_suffix: "@PICCINV.com"
+  ldap_timeout: 3 #s
+
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  sub_sys_config:
+    calliper:
+      open: true
+      title: "文档智能对比"
+    overall:
+      open: true
+      title: "文档智能复核"
+    pdflux:
+      open: true
+      title: "PDF格式转换"

@@ -1,0 +1,77 @@
+sys: "nafmii"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "e842646fcc56c30f52ebced984a20907"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "zUEOXlFRKmqfJRP7"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    password: "zUEOXlFRKmqfJRP7"
+    db: 1
+    expire_seconds: 1800
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      manage_all: "运维用户权限"
+      manage_task: "业务用户权限"
+      inspect: "审核"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      obs_login_hex: "1234abcd5678ef901234abcd5678ef90"
+
+sso_auth:
+  base_server: 'https://nyh.cfae.cn/myDemo/auth/'
+  personal_login_api: 'mobile/login.json'
+  organization_login_api: 'accountInner/login.json'
+  personal_biz_code: "10001"
+  organization_biz_code: "2025"
+
+role_map:
+  biz_role: "bizRole202501"
+  ops_role: "bizRole202502"
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  customer_register_url: "http://10.10.81.215/#/registerNew"
+  customer_forget_password_url: "http://10.10.81.215/#/forgotPassoword"
+  user_login_api: '/personal/login'
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '智能文本识别系统'

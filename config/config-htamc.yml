@@ -1,0 +1,123 @@
+sys: "htamc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "0CTXuF5Qoh"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: '0CTXuF5Qoh'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "6326f0c737a543e9aa7bcb88dc0cbaf9"
+    token_expire: 900
+    exclude_domain: true
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: False
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      internal_host: "http://autodoc:8000/absdoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      push_users_api: "api/v1/htamc/users"
+      allowed_args: ['projectId', 'runId', 'confirm_tasktype']
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      internal_host: "http://calliper:8000/absdoc"
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      push_users_api: "api/v1/htamc/users"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: ""
+      internal_host: "http://glazer:8000/absdoc"
+      subpath: "glazer/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      push_users_api: "api/v1/htamc/users"
+
+front_config:
+  disabled_add_user: True  # 不显示新增用户按钮
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    glazer:
+      open: true
+      title: '智能刷报撰写'
+
+htamc:
+  dubbo:
+    enable: True
+    service:
+      zk_host: "100.64.0.3:2181"  # 多个逗号分割
+      version: ""  # 优先取子项的version
+      timeout: 10
+      list_atoms_user:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: "listAtomsUser"
+        version: ""
+      list_reits_user:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: 'listReitsUser'
+        version: ""
+      get_user_data_and_permission:
+        name: "com.htsc.atoms.dubbo.amcp.api.AmcpPermissionService"
+        method: 'getUserDataAndPermission'
+        version: ""
+
+worker:
+  app_name: "trident"
+  broker: "redis://:0CTXuF5Qoh@redis:6379/2"
+  enable: True
+  timeout: 30
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 2

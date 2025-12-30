@@ -1,0 +1,121 @@
+sys: "ebscn"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "c4f54bae7c13b1c873d639e4fad05ddf"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy11"
+    check_interval: 60
+  customer_postgresql:
+    host: '100.64.0.6'
+    port: 25432
+    user: 'postgres'
+    password: '7IYT8J9PT'
+    db_name: 'pai3rd'
+  session:
+    host: "redis"
+    port: 6379
+    db: 11
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  ebscn_systems: ['calliper', 'grater']
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/ebscn/sso-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/gd_dth/login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/ebscn_sso/login"
+      logout_api: "api/v2/ebscn_sso/logout"
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '文档复核'
+    calliper:
+      open: true
+      title: '文档比对'
+    grater:
+      open: true
+      title: '银行流水'
+
+ebscn_auth:
+  base_url: 'http://10.84.153.230:8801'
+  access_token_api: "/oauth/token"
+  user_info_api: "/v1/user/me"
+  authorize_api: "/oauth/authorize"
+  oa_logout_api: "/logout"
+  client_id: 'oamh'
+  client_secret: 'cb1dda787ff254c35934b2c96c41fabc'
+  code_state_session_key: 'EBSCN_CODE_STATE'
+  access_token_session_key: 'EBSCN_ACCESS_TOKEN'
+
+sso:
+  ebscn:
+    key: "Y80YKq4U"
+  ebscn_oa:
+    key: "Uhso093gdGsc72ks018dgeTchUT7egd2"
+    allowed_referer:
+      - "http://oa.ebscn.com/api/gouc.asp"
+      - "http://10.88.2.94/api/gouc.asp"
+      - "http://10.88.2.91/api/gouc.asp"
+      - "http://10.0.29.111/interface/GdPublicEntrance.jsp"
+      - "http://10.84.147.245/speech/index"
+      - "http://bj.cheftin.com:51081/entry"
+      - "http://10.0.53.224/speech/index"
+      - "http://10.0.2.203/speech/index"
+      - "http://10.0.2.203/"
+
+
+ebscn_db:
+  enable: True
+  raise_db_error: False
+  oracle_dsn: "oracle://READONLY:readonly@100.64.0.122:1521/gdthn"  # tailscale with ebscn vpn $ ssh -L 100.64.0.122:1521:192.168.1.52:1521 localhost
+  user_info_sql: "select USERID, PASSWORD from READONLY.VIB_TUSER where USERID = :USERID and STATUS = 1"
+  pg_user_info_sql: "select loginid, password, status from tuser_origin where loginid = :loginid"

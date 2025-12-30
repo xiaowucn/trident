@@ -1,0 +1,81 @@
+sys: "stronghold"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  # binary_json: True
+  # binary_key: "ee5db41491a5704ba1a01db7e89819c0"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "LmkeIvI0rTLJppsK"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: "KsisJenAUA"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+    exclude_domain: true
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "5cad006552aa4a6386b0b74a9385bd16"
+    token_expire: 600
+    exclude_domain: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    hunter:
+      normal: "普通用户"
+      admin: "管理员"
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+#      manage_prj: "管理项目"
+      manage_user: "用户管理"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_hunter:
+      app_id: "hunter"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "hunter/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://scriber"
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False
+  allow_change_password: True
+  sub_sys_config:
+    hunter:
+      open: true
+      title: '文档综合搜索'
+    scriber:
+      open: true
+      title: '合同智能审核'

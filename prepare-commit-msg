@@ -1,0 +1,10 @@
+#!/bin/sh
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+echo $(pwd)
+echo $COMMIT_MSG_FILE
+perl -i -ple 's!https://gitpd.paodingai.com/cheftin/(docs_\w+)/-/issues/(\d+)\\?#(note_\d+)!$1#$2#$3!g' $COMMIT_MSG_FILE
+perl -i -ple 's!https://gitpd.paodingai.com/cheftin/(docs_\w+)/-/issues/(\d+)!$1#$2!g' $COMMIT_MSG_FILE

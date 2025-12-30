@@ -1,0 +1,147 @@
+sys: "swhysc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "41daa2a4088677d083328aea0711a282"
+  sponsor_dept_ids: [ 'ZQ1212' ]  # 承销保荐部门id
+  bond_dept_ids: [ '23501', '10603' ]  # 固收融资和内核部门id
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "pPK8Gy0f6Jqbr4rCGg"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'OUPYJeRdixwj'
+    expire_seconds: 600
+    cluster:
+      enable: True
+      hosts: ["192.168.24.93:7000", "192.168.24.93:7001", "192.168.24.94:7000", "192.168.24.94:7001", "192.168.24.133:7000", "192.168.24.133:7001"]
+      password: 'redis@skycloud123'
+    check_wrong_password_times:
+      enable: True
+      login_failed_numbers: 5  # 密码输入错误次数
+      limit_seconds: 1800  # 限制时间内，密码次数超过5次，账号被锁定
+      lock_expired_seconds: 300 # 账号锁定时间
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+      project_admin: "项目管理员"
+      sponsor_admin: "承销保荐项目管理员"
+      bond_admin: "固收融资项目管理员"
+  customer_permission:
+    user_admin:
+      autodoc_overall:
+        - normal
+    role_admin:
+      autodoc_overall:
+        - normal
+    sponsor_super_admin:
+      autodoc_overall:
+        - normal
+    bond_super_admin:
+      autodoc_overall:
+        - normal
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      allowed_args: ['direct_jump']
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  password_complexity: True
+  internal: False  # 标记内部环境，用于区分内外环境登录、退出等差异
+  customer_login_api: '/swhysc/oauth-login' # 未登录直接访问trident主页，跳转至客户认证界面接口
+  pd_env: false  # 未登录直接访问trident /#/login页，跳转至客户认证界面接口
+  customer_role_permission_contrast:
+    user_admin: '用户管理员'
+    role_admin: '角色管理员'
+    sponsor_super_admin: '承销保荐管理员'
+    bond_super_admin: '固融管理员'
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+
+worker:
+  app_name: "trident"
+  broker: "sqla+postgresql://postgres:pPK8Gy0f6Jqbr4rCGg@192.168.24.123:15432/trident_celery"
+  enable: true
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 0
+
+swhysc_auth:
+  old_business_system:  # 旧综业系统
+    auth_url: "http://192.168.26.165:8080/third/redirect/check"
+    system_id: "003"
+    aes_key: "yOoeeckwMYMhwOffj6AJpA=="
+  portal_system:  # 门户系统
+    auth_url: "http://192.168.26.165:8080/ibdigital/v1/redirect/check"
+    system_id: "084"
+    aes_key: "zQi/gVb+MzxtWWLDN3Mzvg=="
+  new_business_system:  # 新综业系统
+    auth_url: "http://192.168.27.235:81/ibuser/v1/redirect/check"
+    system_id: "1112"
+    aes_key: "zQi/gVb+MzxtWWLDN3Mzvg=="
+  sync_server: "http://192.168.27.235:81"  # 用户信息同步地址
+  sync_api: "/ibuser/v1/staff/user"  # 用户信息同步api接口
+  sync_dept_enable: True  # 同步部门信息开关
+  sync_dept_server: "http://192.168.27.235:81"  # 部门信息同步地址
+  sync_dept_api: "/ibuser/v1/staff/org"  # 部门信息同步api接口
+  target_dept_ids: ['ZQ1212', '23501', '10603']  # 承销保荐部门id,固收融资和内核部门id
+  check_client_ip: True
+  demeter_system_id: "112"
+  demeter_source: "11201"
+  demeter_ip: '192.168.24.128'  #trident服务地址
+  demeter_access_key: 'dfe8047433d6448998d640780f737262'
+  demeter_secret_key: '8ef01d0a731c4272af42b603444f9008'
+
+use_customer_logout: True
+oa_auth_url: "http://esc.xcdev.swhysc.com/esc-sso/logout"
+oauth2_auth:
+  client_id: "31978fd3271c18472c5a"
+  client_secret: "455df4f177148c49c8a814a1f9d1f4adb0a1"
+  base_url: "http://esc.xcdev.swhysc.com/esc-sso/"
+  authorize_api: "oauth2.0/authorize"
+  access_token_api: "oauth2.0/accessToken"
+  user_info_api: "oauth2.0/profile"
+
+swhysc_redirect_url_config:
+  autodoc_list: "/#/swhy/projects"
+  autodoc_faulty_word: "/#/rule/faulty"
+  autodoc_white_list: "/#/rule/whitelist"
+  autodoc_formula: "/#/rule/formula"
+  autodoc_dashboard: "/#/dashboard"
+  trident_user_manage: "/#/swhy/userManage"
+  trident_role_manage: "/#/swhy/roleManage"

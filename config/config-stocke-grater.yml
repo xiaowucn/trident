@@ -1,0 +1,92 @@
+sys: "stocke"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "Yoopo5yohyah0ohgie"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "Yoopo5yohyah0ohgie"
+    expire_seconds: 3600
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    exclude_domain: true
+  feature:
+    check_captcha: true
+
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True  # 是否展示角色管理界面
+  permission:
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_grater:
+      app_id: "stocke_grater"
+      secret_key: "yU1DdSNPKk6V0hU0hw"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+
+front_config:
+  auto_redirect_sub_sys: True
+  user_login_api: "/user/login"
+  allow_change_password: True # 修改密码
+  show_user_allow_login: True  # 用户管理里展示用户状态列
+  password_complexity: True
+  sub_sys_config:
+    grater:
+      open: true
+      title: '银行流水识别'
+
+oauth2_auth:
+  corp_id: ""  # 企业的CorpID
+  corp_secret: ""  # 应用的凭证密钥
+  agent_id: ""  # 企业应用的id
+  scope: "snsapi_base"
+  access_token_url: "https://wwlocal.gov.weixin.qq.com/cgi-bin/gettoken"
+  authorize_url: "https://open.weixin.qq.com/connect/oauth2/authorize"
+  user_info_url: "https://wwlocal.gov.weixin.qq.com/cgi-bin/user/getuserinfo"
+
+stocke_sync:
+  hive:
+    host: 10.52.130.60
+    port: 10000
+    username: 'thcj'
+    password: 'KUj9HMGEBKTjTZMZhJIH'
+    db_name: 'oa'
+  dept_ids: ''
+  dept_sql: 'SELECT d.dept_id, d.dept_name, d.dept_pid FROM oa.vm_jgcrm_dept d INNER JOIN (SELECT dept_id, MAX(dt) AS latest_dt FROM oa.vm_jgcrm_dept GROUP BY dept_id) AS subquery ON d.dept_id = subquery.dept_id AND d.dt = subquery.latest_dt'
+  dept_user_sql: 'select distinct user_id, dept_id from oa.vm_jgcrm_position where dept_id in %(dept_ids)s'
+  user_sql: 'SELECT u.user_id, u.user_account, u.user_name, u.email, u.mobile, u.dt FROM oa.vm_jgcrm_user u INNER JOIN (SELECT user_id, MAX(dt) AS latest_dt FROM oa.vm_jgcrm_user WHERE user_id IN %(user_ids)s GROUP BY user_id) AS subquery ON u.user_id = subquery.user_id AND u.dt = subquery.latest_dt'
+
+worker:
+  enable: true
+  app_name: "trident"
+  broker: "redis://:Yoopo5yohyah0ohgie@redis:6379/2"
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 2

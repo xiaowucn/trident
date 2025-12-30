@@ -1,0 +1,29 @@
+version: '2.4'
+
+services:
+  postgres:
+    restart: on-failure
+    container_name: trident_pg
+    image: postgres_pd
+    volumes:
+      - "/data/trident/pg_data:/data"
+    environment:
+      - POSTGRES_DB=trident
+      - POSTGRES_PASSWORD=VrDJrh0KN109
+    networks:
+      - trident_network
+  trident:
+    restart: on-failure
+    container_name: trident
+    image: trident
+    ports:
+      - "80:80"
+    volumes:
+      - "/data/trident/trident:/data"
+    networks:
+      - trident_network
+    depends_on:
+      - postgres
+
+networks:
+  trident_network:

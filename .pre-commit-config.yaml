@@ -1,0 +1,59 @@
+fail_fast: true
+default_stages: [ commit ]
+
+repos:
+  - repo: local
+    hooks:
+      - id: prepare-commit-msg
+        name: prepare-commit-msg
+        entry: ./prepare-commit-msg
+        stages: [ prepare-commit-msg ]
+        language: system
+        verbose: true
+      - id: pylint
+        name: pylint
+        entry: env PYTHONPATH=. pylint
+        language: system
+        types: [ python ]
+        verbose: true
+        exclude: '^(?!user_proxy)'
+      - id: black
+        name: black
+        entry: env PYTHONPATH=. black
+        language: system
+        types: [ python ]
+        exclude: '^(?!user_proxy)'
+
+  - repo: local
+    hooks:
+      - id: validate-locked-file
+        name: validate-locked-file
+        entry: bash -c "uv sync --active && uv export --frozen --no-emit-workspace --no-editable --format requirements-txt > /tmp/.trident_requirements.txt && sed -i -e '/--hash/d;s/#.*//;s/\\\\$//' /tmp/.trident_requirements.txt"
+        language: python
+        stages: [ commit ]
+
+  - repo: local  # 需要本地安装: pip install check-requirements-txt
+    hooks:
+      - id: check-requirements-txt
+        name: check-requirements-txt
+        description: Check the missing packages in requirements.txt.
+        entry: check-requirements-txt
+        args:
+          [
+              '--dst_dir', './user_proxy',
+              '--ignore', 'rpc_client,user_proxy',
+              '--req-txt-path', '/tmp/.trident_requirements.txt'
+          ]
+        language: python
+        types: [ python ]
+
+  - repo: local
+    hooks:
+      - id: check-untracked-alembic-migrations
+        name: check-untracked-alembic-migrations
+        description: Check the untracked alembic migrations.
+        entry: check-untracked-alembic-migrations
+        args: [ '-c', 'migrations/alembic.ini' ]
+        language: python
+        types: [ python ]
+        pass_filenames: false  # don't pass filenames to the hook

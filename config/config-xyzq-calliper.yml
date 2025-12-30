@@ -1,0 +1,103 @@
+sys: "xyzq"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "fe6XulZ9DUvF"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "fe6XulZ9DUvF"
+    expire_seconds: 3600
+    check_wrong_password_times:
+      enable: True
+      login_failed_numbers: 5  # 密码输入错误次数
+      limit_seconds: 1800  # 限制时间内，密码次数超过5次，账号被锁定
+      lock_expired_seconds: 1800 # 账号锁定时间
+
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  allow_change_password: True  # 修改密码
+  user_manage: True # 展示用户管理界面
+  password_complexity: True  # 密码复杂度
+  sub_sys_config:
+    calliper:
+      open: true
+      title: '文档智能对比'
+    glazer:
+      open: true
+      title: '智能撰写'
+
+xyzq_auth:
+  after_login: ""
+  ehome_sso_verify:
+    url: "http://129.25.98.8/cas/sys/token/auth"
+  ib_sso_verify:
+    url: "http://192.25.101.47:8081/project_test/login/checksso"
+
+# 新单点
+xyzq_auth_1:
+  auth_from: 'ehomessomain'
+  oa_sso_verify:
+    url: "http://192.25.101.80/cas/v3/sys/token/auth"
+  gipms_sso_verify:
+    url: "http://192.20.103.112:8092/api/sysManager/token/auth"
+
+xyzq_sync:
+  sys_id: ""
+  username: ""
+  password: ""
+  sync_url: "http://192.25.105.100:22068/RESTHRService/GetEmployeeList"
+
+worker:
+  app_name: "trident"
+  broker: "redis://:fe6XulZ9DUvF@redis:6379/2"
+  enable: false
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 1

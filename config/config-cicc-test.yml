@@ -1,0 +1,133 @@
+sys: "cicc"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy1"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: False  # 是否展示角色管理界面
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      dashboard_url: "http://10.110.31.70:8000/api/v1/dashboard/business-target"  # 生产环境 http://10.104.33.70:8000/api/v1/dashboard/business-target
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      dashboard_url: ""  # 需配全地址, 测试环境host: http://10.110.31.70:7000 生产环境host: http://10.104.33.70:9000
+    auth_grater:
+      app_id: "grater"
+      secret_key: "grater_is_alias_of_bankstatements"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+      dashboard_url: ""  # 需配全地址, 测试环境host: http://10.110.31.70:6000 生产环境host: http://10.104.33.70:6000
+
+oauth2_auth:
+  client_id: "trident"
+  client_secret: ""
+  trident_sso_api: "cicc/sso-login"
+  base_url: "http://ssotest.cicc.com/"
+  authorize_api: "sso/profile/oauth2/authorize"
+  access_token_api: "sso/profile/oauth2/accessToken"
+  user_info_api: "sso/profile/oauth2/profile"
+
+cicc_auth_2:
+  auth_url: "http://114.116.25.27:8080/zjzq/sso/getuserinfo"
+
+front_config:
+  allow_change_password: True  # 修改密码
+  sub_sys_config:
+    overall:
+      open: true
+      title: '文档复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'
+      expiration_timestamp: 1753372799  # 建议比子系统早过期
+      expiration_message: "银行流水服务已过期，请联系管理员"
+
+kafka:
+  servers: "10.50.227.99:9092,10.50.227.100:9092,10.50.227.101:9092" # 生产环境：10.51.163.28:9092,10.51.163.29:9092,10.51.163.30:9092
+  topic: "IBS"
+  ciCode: "SYS0152"
+  sub_system:
+    autodoc_overall: '文档复核系统'
+    calliper: '文档智能对比系统'
+    grater: '银行流水识别系统'
+  dashboard_target:
+    upload_documents: '用户上传文件数量'
+    total_users: '当日用户数量'
+    new_users: '当日用户增量'
+    new_projects: '用户新创建项目数量'
+    finish_documents: '识别成功文件总数'
+
+sync_user:
+  product_name: "trident"
+  token: "7c5c9cced5b4d752"  # 生产环境: vbqgjla8g8m8pnzi
+  user_info_server: "http://employee.ibs-ibanker-dev.cicc.io"
+  user_info_uri: "/ib/employee/api/external/employees/basicInfo"
+  # 获取oa账号列表，与trident数据库用户比对
+  app_id: ""
+  app_secret: ""
+  sync_user_url: "https://eappuat.cicc.group/esc-idm/api/v1/account/list"  # https://eapp.cicc.group/esc-idm/api/v1/account/list
+
+worker:
+  app_name: "trident"
+  broker: "redis://:ZEAMUKOY@redis:6379/2"
+  enable: false
+  period_tasks:
+    send_dashboard_data:
+      minute: 0
+      hour: 23
+    sync_user_info:
+      minute: 0
+      hour: 0

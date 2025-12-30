@@ -1,0 +1,87 @@
+sys: "mszq"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "WF87SFA9DYXS"
+    db_name: "user_proxy"
+    check_interval: 60
+    quote_password: False
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'ZEAMUKOY'
+    expire_seconds: 86400
+    single_sign_limit: True
+  sqlalchemy:
+    echo: False
+  online_login_limit:
+    toggle: True
+  proxy_send_timeout: 60 # 启动时 entrypoint 根据此配置修改 nginx 及 gunicorn timeout 时间
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  allow_change_password: True  # 修改密码
+  sub_sys_config:
+    overall:
+      open: false
+      title: '招股书全面复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: false
+      title: '银行流水识别'
+
+mszq_auth:
+  auth_server: "https://noa.mszq.com"
+  oa_server: 'https://oa.mszq.com'
+  oa_login_api: '/login.jsp'
+  oa_logout_api: '/logout.jsp'
+  token_cookie_key: "LRToken"
+  #  session_id_api: '/api/sys-authentication/loginService/getLoginSessionId'
+  login_name_api: '/api/sys-authentication/loginService/getTokenLoginName'
+  auth_username: "ib-doccomp"
+  auth_password: "comp@2023@prod"
+  sso_attribute_session_key: "SSO_ATTRIBUTE"
+
+cas_auth:
+  server: ""
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: ""
+  cas_after_logout: "/api/v1/user/cas-login"
+  login_uri: "/api/cas/login"
+  logout_uri: "/api/cas/logout"
+  validate_uri: "/api/cas/serviceValidate"
+

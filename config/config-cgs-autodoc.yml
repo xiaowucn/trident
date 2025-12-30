@@ -1,0 +1,139 @@
+sys: "cgs" # 投行部
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "ee5db41491a5704ba1a01db7e89819c0"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "BrhnxjTvBwqi"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "saRoFRgS"
+    expire_seconds: 86400
+    sentinel:
+      enable: True
+      hosts: [ "100.64.0.32:26379", "100.64.0.32:26380", "100.64.0.32:26381" ]
+      password: "IlLuiGEl"
+      master_name: "pdmaster"
+      master_db: 15
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "" # http://
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "" # http://
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "" # http://
+      subpath: "glazer/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "app_grater"
+      secret_key: "yU1DdSNPKk6V0hU0hw"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: ""
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+
+front_config:
+  auto_redirect_sub_sys: False
+  customer_login_api: '/user/cas-login' # 未登录直接访问trident主页，跳转至客户认证界面接口
+  pd_env: false  # 未登录直接访问trident /#/login页，跳转至客户认证界面接口
+  sub_sys_config:
+    calliper:
+      open: true
+      title: '文档智能对比'
+    overall:
+      open: true
+      title: "文档智能审核"
+    glazer:
+      open: true
+      title: '文档智能撰写'
+    grater:
+      open: true
+      title: '银行流水识别'
+    pdflux:
+      open: true
+      title: '文档结构识别'
+
+cas_auth:
+  server: "https://iam-test.chinastock.com.cn"
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: ""
+  cas_after_logout: ""
+  login_uri: "/cas/login"
+  logout_uri: "/cas/logout"
+  validate_uri: "/cas/serviceValidate"
+  system_name: ""
+
+ldap:
+  uri: ldap://10.4.5.168:389 # ldap 认证地址
+  search_base: DC=chinastock,DC=com,DC=cn # ldap搜索根节点
+  filter: (&(objectCategory=Person)(sAMAccountName=%s))
+  attrlist: ["o", "description", "cn"]
+  admin_dn: IDPservice@chinastock.com.cn # 管理员账号
+  admin_password: 3xR3HdedTo^Xgp # 管理员密码

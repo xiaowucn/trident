@@ -1,0 +1,147 @@
+sys: "cicc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: ""
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 3600
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: False  # 是否展示角色管理界面
+  sub_sys_simple_permissions:  # 新增子系统，默认角色和管理员角色中填充permission
+    grater:
+      oa_default: ["normal"]
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      dashboard_url: "http://10.110.31.70:8000/api/v1/dashboard/business-target"  # 生产环境 http://10.104.33.70:8000/api/v1/dashboard/business-target
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      dashboard_url: ""  # 需配全地址, 测试环境host: http://10.110.31.70:7000 生产环境host: http://10.104.33.70:9000
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "PQ3DCslJ8sz8JJfO9a"
+      token_expire: 120
+      host: "http://grater"
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+      dashboard_url: ""  # 需配全地址, 测试环境host: http://10.110.31.70:6000 生产环境host: http://10.104.33.70:6000
+
+sso_auth_use: "cicc_auth"
+oauth2_auth:
+  client_id: "e058ccc4167e4d8d"
+  client_secret: "8c495b2b58d24fcfad1a3e951ee71329"
+  trident_sso_api: "cicc/sso-login"
+  base_url: "https://eappuat.cicc.group/esc-sso/"  # 生产 https://eapp.cicc.group/esc-sso/
+  authorize_api: "oauth2.0/authorize"
+  access_token_api: "oauth2.0/accessToken"
+  user_info_api: "oauth2.0/profile"
+
+# 废弃
+cicc_auth_2:
+  auth_url: "http://114.116.25.27:8080/zjzq/sso/getuserinfo"
+
+# 废弃
+cicc_auth_3:  # 客户实现的ldap服务
+  app_code: "200021"
+  auth_url: "https://zjauth.cicc.group/esc-ws/services/authApiService?wsdl"
+  sys_id: "1"
+  eid: "esc"
+  user_id: "citic"
+  password: "F61197817404F7440289DAA8FABC836C6E71DB8B0E07904F740FE67DBB6CD46D67E46488"
+
+front_config:
+  allow_change_password: True  # 修改密码
+  sub_sys_config:
+    overall:
+      open: true
+      title: '文档复核'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'
+      expiration_timestamp: 1784908799
+      expiration_message: "银行流水服务已过期，请联系管理员"
+
+kafka:
+  servers: "10.50.227.99:9092,10.50.227.100:9092,10.50.227.101:9092" # 生产环境：10.51.163.28:9092,10.51.163.29:9092,10.51.163.30:9092
+  topic: "IBS"
+  ciCode: "SYS0152"
+  sub_system:
+    autodoc_overall: '文档复核系统'
+#    calliper: '文档智能对比系统'
+#    grater: '银行流水识别系统'
+  dashboard_target:
+    upload_documents: '用户上传文件数量'
+    total_users: '当日用户数量'
+    new_users: '当日用户增量'
+    new_projects: '用户新创建项目数量'
+    finish_documents: '识别成功文件总数'
+
+sync_user:
+  product_name: "trident"
+  token: "7c5c9cced5b4d752"  # 生产环境: vbqgjla8g8m8pnzi
+  user_info_server: "http://employee.ibs-ibanker-dev.cicc.io"
+  user_info_uri: "/ib/employee/api/external/employees/basicInfo"
+  # 获取oa账号列表，与trident数据库用户比对
+  app_id: "bde5d10058ab4d51"
+  app_secret: "4101dbaedc104e71b348bff3fb9178c0"
+  sync_user_url: "https://eappuat.cicc.group/esc-idm/api/v1/account/list"  # https://eapp.cicc.group/esc-idm/api/v1/account/list
+
+worker:
+  app_name: "trident"
+  broker: "redis://:ZEAMUKOY@redis:6379/2"
+  enable: false
+  period_tasks:
+    send_dashboard_data:
+      minute: 0
+      hour: 23
+    sync_user_info:
+      minute: 0
+      hour: 0

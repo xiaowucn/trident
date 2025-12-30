@@ -1,0 +1,109 @@
+sys: "szse"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "ZIgm8k1pqkw6"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "show-me-the-money"
+    token_expire: 86400
+    exclude_domain: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_mold: "管理Schema"
+      manage_tag: "管理标签"
+      manage_model: "管理模型"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    pdflux:
+      normal: "普通用户"
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "scriber_szse_demo"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://scriber"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      allowed_args: ['project_group_id']  # szse参数
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+ldap:
+  uri: ""
+  search_base: ""
+  filter: ""
+  attrlist: ""
+  admin_dn: ""
+  admin_password: ""
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '金融文档智能复核'
+    calliper:
+      open: true
+      title: '文档智能比对工具'
+    pdflux:
+      open: true
+      title: '文档表格抽取工具'
+    scriber:
+      open: true
+      title: '智能文本信息抽取系统'

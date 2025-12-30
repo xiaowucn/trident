@@ -1,0 +1,78 @@
+sys: "htsc"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "c4f54bae7c13b1c873d639e4fad05ddf"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy12"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 12
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+rpc:
+  web:
+    enable: False
+    target: '127.0.0.1:50060'
+    port: 50060
+    max_receive_message_length: 104857600
+    manual_retry: False  # 手动重试
+    timeout: 20  # s
+    enable_retries: 0  # retry   0/1
+    keepalive:
+      enable: False
+      time: 60000  # ms
+      timeout: 20000  # ms
+      permit_without_calls: 1  # 0/1 开启空闲时间ping
+      max_pings_without_data: 0  # 空闲时间ping的最大数量, 0表示不限制
+      without_data: 30000  # ms 连续ping帧之间的最小允许时间
+      strikes: 2
+    retryThrottling:
+      maxTokens: 10
+      tokenRatio: 0.1
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://100.64.0.9:55849"
+      subpath: "glazer/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  sub_sys_config:
+    glazer:
+      open: true
+      title: '智能撰写'
+
+htsc_auth:
+  oa_logout_url: "/"
+  department_enable: false
+  department_host: "http://168.61.13.240:8080"
+  department_api: "/lhzq.ibms/paodingStat/getOrgByUserId"

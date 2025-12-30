@@ -1,0 +1,81 @@
+sys: "dagongcredit"
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "947e5b0ee6ee250b6a4e92b04af3e23c"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "iZj5VqoZZEK5T2A"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: "iZj5VqoZZEK5T2A"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "d9721b01ed8048b5bc063da519dd554e"
+    token_expire: 900
+    exclude_domain: true
+    token_single_effective: True
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True
+  allow_sys_admin_sso: False # 是否允许系统管理员使用单点登录
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    generator:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      internal_host: "http://autodoc:8000/absdoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_generator:
+      app_id: "dg_generator"
+      secret_key: "hello_dg_generator"
+      token_expire: 120
+      host: ""
+      internal_host: ""
+      subpath: "generator/"
+      auth_api: "api/v1/users/unify-login"
+      logout_api: "api/v1/users/logout"
+
+oa_auth_url: "/"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  sub_sys_config:
+    overall:
+      open: true
+      title: "文档智能复核"
+    generator:
+      open: true
+      title: "“天信”AI生成模型"
+      captions: "使用“天信”AI生成模型，通过知识库管理和提示词工程等技术，生成合规、合法、可溯源的评级报告。"

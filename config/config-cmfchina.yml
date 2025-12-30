@@ -1,0 +1,109 @@
+sys: "cmfchina"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "9accaca77f3f8537ecea332ab26958e7"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "DdBw5afk32KJ"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    password: "QsD1kRBfCyxR"
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  pass_parameter_permissions: True # 向scriber传递parameter_permissions参数
+  auto_create_user: True
+  permission:
+    scriber:
+      browse: "浏览"
+      remark: "信息提取"
+      inspect: "规则审核"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      customer_rule_participate : "规则管理"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      internal_host: "http://scriber:8000"
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      business_system_api: 'api/v1/plugins/cmfchina/groups'
+
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  parameter_permissions:
+    para: '数据全景'
+    para_view: '查看'
+    para_export: '导出'
+    prj: '项目管理'
+    scene: '场景管理'
+    rule: '规则管理'
+    rule_view: '查看'
+    rule_settings: '设置'
+    classification: '文档分类配置'
+    classification_view: '查看'
+    classification_settings: '设置'
+    model: '模型配置'
+    stat: '统计评估'
+    stat_call: '调用统计'
+    stat_accuracy: '准确率统计'
+    stat_business: '业务统计'
+    group: '业务组管理'
+    email: '邮箱配置'
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '数字员工平台'
+
+cas_auth:
+  server: "http://iamdev.cmfchina.com/esc-sso/"  # 生产环境：http://iam.cmfchina.com/esc-sso/
+  internal_server: ""
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: "/api/v1/get-off?sys=scriber"
+  cas_after_logout: ""
+  login_uri: "login"
+  logout_uri: "logout"
+  validate_uri: "p3/serviceValidate"
+
+sync_user_info:
+  server: 'http://iamdev.cmfchina.com/esc-idm/'
+  sync_url: 'api/v1/account/listAll'
+  app_id: ""
+  app_secret: ""
+
+worker:
+  app_name: "trident"
+  broker: "redis://:QsD1kRBfCyxR@redis:6379/2"
+  enable: true
+  period_tasks:
+    sync_user:
+      minute: 0
+      hour: 2

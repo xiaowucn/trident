@@ -1,0 +1,70 @@
+sys: "essence"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "4b92e569d57fab0c44806606cac8d312"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "2UMnJVpqML"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: "UeG3lUak"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  permission:
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_grater:
+      app_id: "essence_grater"
+      secret_key: "635sykNKqSWd4pXdj7"
+      token_expire: 120
+      host: ""
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+
+cas_auth:
+  server: "https://iam-sit.axzq.com.cn" # uat环境: https://iam-uat.axzq.com.cn, 正式环境: https://iam.essence.com.cn
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: "/api/v1/get-off?sys=grater"
+  cas_after_logout: "/api/v1/user/cas-login"
+  login_uri: "/cas/login"
+  logout_uri: "/cas/logout"
+  validate_uri: "/cas/serviceValidate"
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: False # 展示用户管理界面
+  sub_sys_config:
+    overall:
+      open: false
+      title: '招股书全面复核'
+    calliper:
+      open: false
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'

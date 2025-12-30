@@ -1,0 +1,116 @@
+sys: "nexchip"
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "947e5b0ee6ee250b6a4e92b04af3e23c"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "NVk5wxdKt5QSqzJq"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: "X7dKBQUHNqudK6Jo"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "d9721b01ed8048b5bc063da519dd554e"
+    token_expire: 900
+    exclude_domain: true
+    token_single_effective: True
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True
+  allow_sys_admin_sso: False # 是否允许系统管理员使用单点登录
+  permission:
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      inspect: "审核"
+      customer_rule_participate: "规则管理-自定义规则-经办"
+      customer_rule_review: "规则管理-自定义规则-复核"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      internal_host: "http://autodoc:8000/absdoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: ""
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '文档信息抽取与审核'
+      captions: "支持对各类长文本及制式表单进行关键信息抽取与内容审核，提升信息处理效率。"
+    overall:
+      open: true
+      title: "文档智能复核"
+      captions: "基于大模型技术，为各类文档提供基础错误检查，有效提升报备文件质量，减少因反复修改带来的效率损耗。"
+    pdflux:
+      open: true
+      title: "通用文档结构识别"
+      captions: "能够自动识别各类文档结构，从复杂版式 PDF 中高效、准确地提取各类表格数据，并支持转换为 Excel 格式。"
+    calliper:
+      open: true
+      title: "文档内容智能比对"
+      captions: "自动比对不同版本文档之间的内容差异，以可视化方式清晰呈现变更部分，并支持导出比对结果。"
+

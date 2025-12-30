@@ -1,0 +1,69 @@
+sys: "chinaamc_yx"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "zUEOXlFRKmqfJRP7"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 2
+    password: "zUEOXlFRKmqfJRP7"
+    expire_seconds: 3600
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    exclude_domain: true
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True  # 是否展示角色管理界面
+  permission:
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      inspect: "审核"
+      customer_rule_participate: "规则管理-自定义规则-经办"
+      customer_rule_review: "规则管理-自定义规则-复核"
+      developed_rule_browse: "规则管理-研发规则"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable_chinaamc_yx"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: True
+  user_login_api: "/user/login"
+  allow_change_password: True # 修改密码
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '文件智能审核'
+
+chinaamc_auth:
+  aes_key: "A7F5DA5317424D3296BC2277D38D1AEF"
+  aes_iv: "HQti4TAfQIU08GME"
+  sign_expired: 300000  # 5min

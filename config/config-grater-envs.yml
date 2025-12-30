@@ -1,0 +1,177 @@
+sys: "csits"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "4b92e569d57fab0c44806606cac8d312"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy15"
+    check_interval: 60
+  session:
+    host: "redis2"
+    port: 6379
+    db: 0
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  permission:
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+    grater_test:
+      normal: "普通用户"
+      admin: "管理员"
+    toc:
+      normal: "普通用户"
+      admin: "管理员"
+    toc_test:
+      normal: "普通用户"
+      admin: "管理员"
+    dev:
+      normal: "普通用户"
+      admin: "管理员"
+    csits_test:
+      normal: "普通用户"
+      admin: "管理员"
+    hlb:
+      normal: "普通用户"
+      admin: "管理员"
+    dev_scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      manage_law: "法规管理"
+      inspect: "审核"
+      customer_rule_participate: "规则管理-自定义规则-经办"
+      customer_rule_review: "规则管理-自定义规则-复核"
+      developed_rule_browse: "规则管理-研发规则"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://100.64.0.12:25424"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_grater_test:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "https://grater-vip.dev.cheftin.cn/grater"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_toc:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://100.64.0.12:25426"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_toc_test:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "https://grater.dev.cheftin.cn/grater"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_dev:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://100.64.0.239:8008"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_csits_test:
+      app_id: "csits_grater"
+      secret_key: "yU1DdSNPKk6V0hU0hw"
+      token_expire: 120
+      host: "http://100.64.0.12:55818/"
+      subpath: "grater/"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_hlb:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://100.64.0.163:8008"
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_dev_scriber:
+      app_id: "remarkable_dev"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://100.64.0.239:8083"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+      obs_login_hex: "1234abcd5678ef901234abcd5678ef90"
+
+cas_auth:
+  server: "http://100.64.0.12:55818"
+  login_uri: "/"
+  logout_uri: "/api/v1/user/logout"
+
+front_config:
+  auto_redirect_sub_sys: true # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  username_manage: True
+  sub_sys_config:
+    grater:
+      open: True
+      title: '银行流水2B DEV'
+    grater_test:
+      open: True
+      title: '银行流水2B TEST'
+    toc:
+      open: True
+      title: '银行流水2C DEV'
+    toc_test:
+      open: True
+      title: '银行流水2C TEST'
+    dev:
+      open: True
+      title: '银行流水dev环境'
+    csits_test:
+      open: True
+      title: '银行流水中证测试环境'
+    hlb:
+      open: True
+      title: '银行流水 dev 环境'
+    dev_scriber:
+      open: True
+      title: '文件智能审核 dev 环境'
+
+csits_track:
+  start_api: ""
+  end_api: ""
+
+csits_auth:
+  department_enable: True
+  department_host: "http://100.64.0.163:8000"
+  department_api: "/urms-api/api/v4/userInfo/getUserInfoByUserId"
+  user_role_api: "/urms-api/api/v4/role/roleAllByUserId"
+  user_info_api: "/urms-api/api/v4/userInfo/getUserByAcctNbr"
+  org_id: 300
+  org_unit_tree_api: "/urms-api/api/v4/orgUnit/getOrgUnitTreeV36"
+  org_user_infos_api: "/urms-api/api/v4/userInfo/getOrgUserInfos"
+  user_infos_api: "/urms-api/api/v4/userInfo/getUserInfos"
+  main_department_api: "/urms-api/api/v4/userInfo/getMasterOrgIdByUserId"
+  sys_code: "trident"
+  secret_key: "DFA921EC7F1F0CFB4AA21E31913DC756"  # sm4解密key
+  timeout: 30

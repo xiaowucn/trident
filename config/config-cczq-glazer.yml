@@ -1,0 +1,64 @@
+sys: "cczq"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "c4f54bae7c13b1c873d639e4fad05ddf"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "suXr9QwwqoExce5R"
+    db_name: "trident"
+    backend: 'tdsql'
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'suXr9QwwqoExce5R'
+    expire_seconds: 7200
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: ""
+      subpath: "glazer/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  sub_sys_config:
+    glazer:
+      open: true
+      title: '智能刷报'
+
+oauth2_auth:
+  client_id: ""
+  client_secret: ""
+  scope: "openid"
+  base_url: "https://test-sso-staffcenter.cgws.com/auth/realms/cgws/protocol/openid-connect/"  # 正式环境 https://sso-staffcenter.cgws.com/auth/realms/cgws/protocol/openid-connect/
+  authorize_api: "auth"
+  access_token_api: "token"
+  check_access_token_api: "token/introspect"
+  user_info_api: "userinfo"

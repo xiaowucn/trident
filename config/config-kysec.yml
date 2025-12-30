@@ -1,0 +1,121 @@
+sys: "kysec"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "3a9b254b503a750d96e14cebc7a310bd"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "mSvxXrKi"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    password: "SfRoWTWS"
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc_overall"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+ldap:
+  version: 3
+  uri: ldap://117.39.28.10:1389
+  search_base: ou=utrust,dc=chinautrust,dc=com
+  filter: (&(objectClass=inetOrgPerson)(uid=%s))
+  attrlist: ["o", "description", "cn"]
+  admin_dn: uid=ldapreader,name=EADept,ou=deptment,ou=utrust,dc=chinautrust,dc=com
+  admin_password: 365D38C60C4E98CA5CA6DBC02D396E53
+  after_login: ""
+  passwd_encrypt: true
+
+sync_user_info:
+  uri: "http://OA服务器地址/services"  # 服务地址
+  ip_address: # 服务器注册的客户端ip
+  department_roles:
+    first_level:
+      department_ids: [10, 18, 8, 23, 25, 28, 29, 22, 24, 21, 636, 655, 713, 35, 816, 817]
+      default_roles: ["PDFlux+Autodoc+Calliper"]
+
+kysec:
+  enable: True
+  db:
+    department_sql: "select * from kyvw_odepartment"
+    user_sql: "select * from evw_employee"
+    host: "10.251.9.144"
+    port: 1521
+    user: "ds_jyhr_base"
+    password: "ds_jyhr_base"
+    db_name: "orcl"
+
+worker:
+  app_name: "trident"
+  broker: "redis://:SfRoWTWS@redis:6379/2"
+  enable: false
+  sync_department: false
+  period_tasks:
+    sync_user_info_task:
+      minute: 0
+      hour: 0
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  sub_sys_config:
+    overall:
+      open: true
+      title: '智能复核'
+    pdflux:
+      open: true
+      title: '智能抽取'
+    calliper:
+      open: true
+      title: '智能比对'

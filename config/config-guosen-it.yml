@@ -1,0 +1,126 @@
+sys: "guosen"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "AWURx1SVmP2q"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "AWURx1SVmP2q"
+    expire_seconds: 3600
+  sqlalchemy:
+    echo: False
+  auth_common:
+    enable: true
+    exclude_domain: true
+
+unify_auth:
+  auto_create_user: True
+  show_role_manage: True  # 是否展示角色管理界面
+  permission:
+    calliper:
+      admin: "管理员"
+      normal: "普通用户"
+    scriber_kv:
+      normal: "普通用户"
+    pdflux:
+      normal: "普通用户"
+      admin: "管理员"
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber_kv:
+      app_id: "scriber_kv_prod"
+      secret_key: "hello_pdai"
+      token_expire: 120
+      host: "http://scriber_kv"
+      subpath: ""
+      auth_api: "api/v1/unify-login"
+      logout_api: "api/v1/logout"
+    auth_pdflux:
+      app_id: "pfbbackend"
+      secret_key: "hello_pfbbackend"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/common-logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://grater"
+      subpath: ""
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+
+front_config:
+  user_login_api: "/user/login"
+  allow_change_password: True # 修改密码
+  sub_sys_config:
+    scriber_kv:
+      open: true
+      title: "ScriberKV制式表单文档信息抽取"
+      captions: "针对制式表单进行关键要素提取，支持表单的标注和模型训练。"
+    scriber:
+      open: true
+      title: 'Scriber文档信息抽取'
+      captions: "支持各类长文本要素信息标注、抽取生成结构化关键信息。"
+    calliper:
+      open: true
+      title: 'Calliper文档内容比对'
+      captions: "自动比对不同版本文档的差异变更信息，以可视化形式展示差异、并支持比对结果导出。"
+    pdflux:
+      open: true
+      title: 'PDFlux通用文档结构识别'
+      captions: "自动识别金融文档的结构信息，从各种复杂排版的PDF文档中高效、准确地识别、提取各种形式的表格数据，并支持转换成Excel。"
+    grater:
+      open: true
+      title: 'Grater银行流水识别'
+      captions: "支持上传PDF扫描件格式的流水，通过OCR识别、提取文件内部的表格数据，支持导出Excel版流水文件"
+
+guosen_auth:
+  IASID: "309"
+  IASKEY: "2D990E8F4AD9C4A82451A2D5197EFB014ED7DB913469D937"
+  POSTURL: "https://uatsso.guosen.com.cn/Login.aspx"
+  AFTER_LOGIN: "api/v1/get-off"
+  ReturnURL: 'SSOReturnURL'

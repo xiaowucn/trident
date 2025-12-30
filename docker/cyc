@@ -1,0 +1,92 @@
+#!/bin/bash
+
+set -ex
+set -o pipefail
+
+export CYC_SERVER="cyc-amd64.cheftin.cn:44"
+export max_procs=40
+if [[ "$(arch)" == "aarch64" ]]; then
+  export CYC_SERVER="cyc-arm64.cheftin.cn:44"
+  export max_procs=10
+fi
+
+mkdir -p /tmp/cyc
+
+compile_py_to_so() {
+
+  rst=$(mktemp -p /tmp/cyc)
+  py_md5=$(md5sum -b "${1}" | awk '{print $1}')
+  if [[ $(curl --location -w "%{http_code}" --request POST "http://${CYC_SERVER}/api/cyc_check" \
+    --form "path=${1}" \
+    --form 'token=da3d0110-daa1-11ea-9208-8fc2150ed896' \
+    --form "md5=${py_md5}" \
+    --form "py_version=python3.12" \
+    -s --output "${rst}") == "200" ]]; then
+    test "$(du -sbL "${rst}" | awk '{print $1}')" = "0" && exit 1
+    mv "${rst}" "${1%.py*}.so"
+  else
+    status_code=$(curl --location -w "%{http_code}" --request POST "http://${CYC_SERVER}/api/cyc" \
+      --form "file=@${1}" \
+      --form "path=${1}" \
+      --form "token=da3d0110-daa1-11ea-9208-8fc2150ed896" \
+      --form "md5=${py_md5}" \
+      --form "py_version=python3.12" \
+      -s --output "${rst}")
+    if [[ "${status_code}" == "200" ]]; then
+      test "$(du -sbL "${rst}" | awk '{print $1}')" = "0" && exit 1
+      mv "${rst}" "${1%.py*}.so"
+    elif [[ "${status_code}" == "406" ]]; then
+      echo "---------------------------------------------------------------"
+      echo "${1}: Skip cyc compile"
+      echo "---------------------------------------------------------------"
+      exit 0
+    else
+      cat "${rst}"
+      rm -rf "${rst}"
+      exit 1
+    fi
+  fi
+
+  rm -rf "${1}"
+  rm -rf "${1%.py*}".c
+}
+
+compile_sh_to_bin() {
+  if ! CFLAGS=-static shc -r -f "${1}"; then
+    echo "compile ${1} to bin failed"
+    exit 1
+  fi
+  mv "${1}".x "${1}"
+  rm -rf "${1}".x.c
+}
+
+compile_py_to_pyc() {
+  find "${1}" -name '*.py' | xargs -I {} python3 -m compileall -f {}
+
+  for old in $(find "${1}" -name '*.pyc' -path '*/__pycache__/*'); do
+    new=$(echo "$old" | sed -e 's/^\(.\+\).cpython\-.*.pyc$/\1.pyc/')
+    mv -v "$old" $(dirname "$new")"/../"$(basename "$new")
+  done
+
+  find "${1}" -name '*.py' -delete
+  find "${1}" -name '__pycache__' -type d -exec rm -r {} \; || true
+}
+
+export -f compile_py_to_so
+
+find ./ -name '__pycache__' -type d -exec rm -r {} \; || true
+
+find ./ -name '*.py' | xargs -I{} -P ${max_procs} bash -c 'compile_py_to_so {}'
+
+compile_py_to_pyc ./
+
+if [ -d migrations ]; then
+  sed -i 's/\[alembic\]/[alembic]\nsourceless = true/' migrations/alembic.ini
+fi
+
+find ./ -name '__pycache__' -type d -exec rm -r {} \; || true
+
+compile_sh_to_bin docker/docker-entrypoint.sh
+compile_sh_to_bin docker/patch_installer.sh
+
+find ./ -name '*.proto' -type f -delete

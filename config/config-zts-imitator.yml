@@ -1,0 +1,89 @@
+sys: "zts"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "c4f54bae7c13b1c873d639e4fad05ddf"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "WF87SFA9DYXS"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 5
+    password: "ZEAMUKOY"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    imitator:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_imitator:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: ""
+      subpath: "glazer/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  sub_sys_config:
+    imitator:
+      open: true
+      title: '智能填充'
+
+cas_auth:
+  server: "http://10.55.8.90:30080"
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: ""
+  cas_after_logout: ""
+  login_uri: "/cas/login"
+  logout_uri: "/cas/logout"
+  validate_uri: "/cas/serviceValidate"
+  system_name: ''
+
+zts:
+  app_code: "M0117"
+  user: # 获取用户列表
+    enable: true
+    server: 'http://10.55.8.90:30080'
+    uri: '/v1/users'
+  group: # 获取部门列表
+    enable: true
+    server: 'http://10.55.8.90:30080'
+    uri: '/v1/groups'
+
+worker:
+  app_name: "trident"
+  broker: "redis://:ZEAMUKOY@redis:6379/2"
+  enable: false
+  period_tasks:
+    sync_group:
+      minute: 0
+      hour: 0
+    sync_user:
+      minute: 0
+      hour: 0

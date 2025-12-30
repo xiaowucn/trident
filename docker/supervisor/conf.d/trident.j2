@@ -1,0 +1,131 @@
+{%- set mode=environ('MODE') -%}
+{%- set enable_stdout_log=environ("ENABLE_STDOUT_LOG") == "true" or (environ("KUBERNETES_SERVICE_HOST") and environ("DISABLE_K8S_LOG") != "true") -%}
+{%- set enable_crontab=environ("ENABLE_CRONTAB") -%}
+{%- set web_num=environ('WEB_NUM') -%}
+{%- set service_num=environ('SERVICE_NUM')-%}
+{%- set supervisor_log_rotate=environ("SUPERVISOR_LOGFILE_BY_DATE") -%}
+{%- set supervisor_logfile_backups=environ("SUPERVISOR_LOGFILE_BACKUPS") -%}
+{%- set groups = [] -%}
+{%- set _ = groups.append("nginx")-%}
+{% if mode == 'SERVICE' %}
+{%- set _ = groups.append("trident-service") -%}
+[program:trident-service]
+directory=/opt/trident
+command=python3 rpc_run.pyc
+process_name=%(program_name)s_%(process_num)02d
+numprocs={{ service_num }}
+autostart=true
+autorestart=true
+stopasgroup=true
+startsecs=5
+{% if enable_stdout_log  -%}
+stderr_logfile=/dev/fd/2
+stdout_logfile=/dev/fd/1
+stderr_logfile_maxbytes=0
+stdout_logfile_maxbytes=0
+{%- else -%}
+{%- if supervisor_log_rotate -%}
+when={{ supervisor_log_rotate }}
+{%- endif %}
+stderr_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile=/data/logs/trident-service-stdout.log
+stderr_logfile=/data/logs/trident-service-stderr.log
+{%- endif %}
+
+[program:nginx]
+directory=/etc/nginx/
+command=nginx -g "daemon off;" -c /dev/shm/etc/nginx/conf.d/trident.conf
+stopasgroup=true
+autostart=true
+autorestart=true
+startsecs=1
+{% if enable_stdout_log  -%}
+stderr_logfile=/dev/fd/2
+stdout_logfile=/dev/fd/1
+stderr_logfile_maxbytes=0
+stdout_logfile_maxbytes=0
+{%- else -%}
+{%- if supervisor_log_rotate -%}
+when={{ supervisor_log_rotate }}
+{%- endif %}
+stderr_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile_backups={{supervisor_logfile_backups}}
+stderr_logfile=/data/logs/nginx-stderr.log
+stdout_logfile=/data/logs/nginx-stdout.log
+{%- endif %}
+{%- else -%}
+{%- set _ = groups.append("trident-web")-%}
+[program:trident-web]
+directory=/opt/trident
+command=gunicorn user_proxy.server:TornadoApplication() -b 0.0.0.0:18000 -k user_proxy.gtornado.TornadoWorker -w {{ web_num }} --timeout=600 --graceful-timeout=120 --reuse-port
+autostart=true
+autorestart=true
+stopasgroup=true
+startsecs=5
+{% if enable_stdout_log  -%}
+stderr_logfile=/dev/fd/2
+stdout_logfile=/dev/fd/1
+stderr_logfile_maxbytes=0
+stdout_logfile_maxbytes=0
+{%- else -%}
+{%- if supervisor_log_rotate -%}
+when={{ supervisor_log_rotate }}
+{%- endif %}
+stderr_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile_backups={{supervisor_logfile_backups}}
+stderr_logfile=/data/logs/trident-web-stderr.log
+stdout_logfile=/data/logs/trident-web-stdout.log
+{%- endif %}
+[program:nginx]
+directory=/etc/nginx/
+command=nginx -g "daemon off;" -c /dev/shm/etc/nginx/conf.d/trident.conf
+stopasgroup=true
+autostart=true
+autorestart=true
+startsecs=1
+{% if enable_stdout_log  -%}
+stderr_logfile=/dev/fd/2
+stdout_logfile=/dev/fd/1
+stderr_logfile_maxbytes=0
+stdout_logfile_maxbytes=0
+{%- else -%}
+{%- if supervisor_log_rotate -%}
+when={{ supervisor_log_rotate }}
+{%- endif %}
+stderr_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile_backups={{supervisor_logfile_backups}}
+stderr_logfile=/data/logs/nginx-stderr.log
+stdout_logfile=/data/logs/nginx-stdout.log
+{%- endif %}
+{%- endif %}
+
+{% if enable_crontab == 'True' %}
+{%- set _ = groups.append("trident-crontab")-%}
+[program:trident-crontab]
+directory=/opt/trident
+command=celery -A user_proxy.worker.app worker -n 'crontab-tasks-%%n@%%h' -c 1 -Q celery -B -l INFO
+autostart=true
+autorestart=true
+stopasgroup=true
+startsecs=5
+{% if enable_stdout_log  -%}
+stderr_logfile=/dev/fd/2
+stdout_logfile=/dev/fd/1
+stderr_logfile_maxbytes=0
+stdout_logfile_maxbytes=0
+{%- else -%}
+{%- if supervisor_log_rotate -%}
+when={{ supervisor_log_rotate }}
+{%- endif %}
+stderr_logfile_backups={{supervisor_logfile_backups}}
+stdout_logfile_backups={{supervisor_logfile_backups}}
+stderr_logfile=/data/logs/trident-crontab-stderr.log
+stdout_logfile=/data/logs/trident-crontab-stdout.log
+{%- endif %}
+{%- endif %}
+{%- if groups %}
+
+[group:trident]
+programs={{ groups | join(",") }}
+{%- endif -%}

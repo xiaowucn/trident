@@ -1,0 +1,50 @@
+sys: "sse-autodoc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "trident-postgres"
+    port: 5432
+    user: "postgres"
+    password: "VrDJrh0KN109"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "trident-redis"
+    port: 6379
+    db: 1
+    password: "HcuG3iHg8T5o"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc"
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '金融文档复核系统'

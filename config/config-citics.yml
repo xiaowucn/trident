@@ -1,0 +1,139 @@
+sys: "citics"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "HrbnxjTvBwqi"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: 'roSaFRgS'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      normal: "普通用户"
+      admin: "管理员"
+    scriber:
+      browse: "普通用户"
+      manage_prj: "项目管理"
+    scriber_th:
+      browse: "普通用户"
+      manage_prj: "项目管理"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+    grater:
+      normal: "普通用户"
+      admin: "管理员"
+    glazer:
+      normal: "普通用户"
+      admin: "管理员"
+    stronghold:
+      normal: "普通用户"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://autodoc_overall"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: "http://calliper"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://scriber"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber_th:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber_th/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_grater:
+      app_id: "bankstatement"
+      secret_key: "hello_bankstatement"
+      token_expire: 120
+      host: "http://grater"
+      subpath: ""
+      auth_api: "api/v2/user/unify-login"
+      logout_api: "api/v2/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_stronghold:
+      app_id: "stronghold"
+      secret_key: "hello_stronghold"
+      token_expire: 120
+      host: "http://stronghold"
+      subpath: ""
+      auth_api: "api/v1/plugins/citics/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    scriber:
+      open: true
+      title: '循环购买公告提取'
+    scriber_th:
+      open: true
+      title: '股东股份变更明细提取'
+    calliper:
+      open: true
+      title: '文档智能对比'
+    grater:
+      open: true
+      title: '银行流水识别'
+    glazer:
+      open: true
+      title: '智能刷报撰写'
+    stronghold:
+      open: false
+      title: '预览系统'
+
+citics_auth:
+  app_id: "AIDOC@CITICS.COM"
+  app_secret: "pY!Ky4nQAsmzU?jQ"
+  auth_host: "https://passport.citicsinfo.com/"
+  auth_api: "passport/accessApplication"

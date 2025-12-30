@@ -1,0 +1,130 @@
+sys: "citics-tg"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "I7FQ9T0S75"
+    db_name: "user_proxy21"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 2
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+
+unify_auth:
+  pass_parameter_permissions: True # 向scriber传递parameter_permissions参数
+  auto_create_user: True
+  permission:
+    scriber:
+      browse: "浏览"
+      remark: "信息提取"
+      inspect: "规则审核"
+      manage_prj: "项目管理"
+      manage_mold: "Schema管理"
+      manage_model: "模型管理"
+      customer_rule_participate: "规则管理"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+front_config:
+  group_names: [ "参数组", "估值组", "客服组", "产品组", "投监组" ]  # 中信托管部scriber业务组名
+  parameter_permissions:
+    sys: "系统全景"
+    sys_view: "查看"
+    sys_search: "搜索"
+    sys_detail: "文档详情"
+    sys_project: "项目中查看"
+    sys_compare: "比对详情"
+    prj: "项目列表"
+    prj_view: "查看项目"
+    prj_add: "新建项目"
+    prj_del: "删除项目"
+    prj_detail: "项目详情"
+    prj_detail_batchdel: "批量删除"
+    prj_detail_compare: "文档比对"
+    prj_detail_compare_view: "查看"
+    prj_detail_compare_mapping: "映射关系检查"
+    prj_detail_compare_push: "参数推送"
+    prj_detail_compare_submit: "提交答案"
+    prj_detail_del: "文档删除"
+    prj_detail_edit: "文档编辑"
+    prj_detail_view: "文档查看"
+    prj_detail_file: "文档详情"
+    prj_detail_file_audit: "规则审核"
+    prj_detail_file_audit_view: "查看"
+    prj_detail_file_audit_submit: "提交"
+    prj_detail_file_audit_export: "导出"
+    prj_detail_file_para: "参数转化"
+    prj_detail_file_para_view: "查看"
+    prj_detail_file_para_statis: "统计状态"
+    prj_detail_file_para_mapping: "映射关系检查"
+    prj_detail_file_para_push: "参数推送"
+    prj_detail_file_para_submit: "提交答案"
+    prj_detail_predict: "批量预测"
+    prj_detail_inspect: "批量审核"
+    prj_detail_search: "文档搜索"
+    prj_detail_upload: "上传文件"
+    prj_edit: "编辑项目"
+    prj_search: "搜索项目"
+    template: "模板管理"
+    template_view: "查看模板"
+    template_add: "新增模板"
+    template_del: "删除模板"
+    template_edit: "编辑模板"
+    push: "数据推送配置"
+    push_view: "查看推送"
+    push_add: "新增推送"
+    push_del: "删除推送"
+    push_edit: "编辑推送"
+    para: "参数值映射配置"
+    para_view: "查看映射"
+    para_search: "搜索映射"
+    para_add: "新增映射"
+    para_del: "删除映射"
+    para_edit: "编辑映射"
+    record: "记录管理"
+    record_product: "产品结果"
+    record_product_view: "查看"
+    record_product_search: "搜索"
+    record_product_detail: "文档详情"
+    record_product_project: "项目中查看"
+    record_rate: "准确率统计"
+    record_rate_view: "查看"
+    record_push: "推送记录"
+    record_push_view: "查看"
+    record_push_search: "搜索"
+    record_push_detail: "推送详情"
+    record_push_del: "删除"
+    record_push_repush: "重新推送"
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '参数提取稽核'
+      captions: "提取私募基金、资管计划的合同、变更协议的文本并转化为参数"
+
+citics_auth:
+  app_id: "SDAUDIT@CITICS.COM"
+  app_secret: "g$*@p7sRho3Qv$%2"  # 正式环境: bADRTPD#?c59QS
+  auth_host: "https://passport.citicsinfo.com/"
+  auth_api: "passport/accessApplication"

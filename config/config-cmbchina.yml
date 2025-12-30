@@ -1,0 +1,124 @@
+sys: "cmbchina"
+
+logging:
+  level: "debug"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  binary_json: True
+  binary_key: "c4f54bae7c13b1c873d639e4fad05ddf"
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "a1I9NAIhoEtJo"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    password: "TTwOTbWpK"
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    scriber:
+      remark: "标注"
+      browse: "浏览"
+      manage_prj: "管理项目"
+      manage_user: "用户管理"
+      manage_mold: "schema管理"
+      manage_model: "模型管理"
+      inspect: "审核"
+      customer_rule_participate: "规则管理-自定义规则-经办"
+      customer_rule_review: "规则管理-自定义规则-复核"
+    glazer:
+      normal: "智能刷报_普通用户"
+      admin: "智能刷报_管理员"
+    glazer_imitator:
+      imitator_normal: "智能填充_普通用户"
+      imitator_admin: "智能填充_管理员"
+  customer_permission:
+    glazer_imitator_admin:
+      glazer:
+        - admin
+        - normal
+      glazer_imitator:
+        - imitator_normal
+        - imitator_admin
+    glazer_admin:
+      glazer:
+        - admin
+        - normal
+    imitator_admin:
+      glazer_imitator:
+        - imitator_normal
+        - imitator_admin
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_scriber:
+      app_id: "remarkable"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: ""
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      origin: "/#/project"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_glazer_imitator:
+      app_id: "glazer"
+      secret_key: "hello_glazer"
+      token_expire: 120
+      host: "http://glazer"
+      subpath: ""
+      origin: "/#/imitator/project"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  allow_change_password: True  # 修改密码
+  customer_role_permission_contrast:
+    glazer_admin: '智能刷报管理员'
+    imitator_admin: '智能填充管理员'
+    glazer_imitator_admin: '智能撰写管理员'
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '文档信息抽取'
+    glazer:
+      open: true
+      title: '文档智能撰写'
+    glazer_imitator:
+      open: true
+      title: '文档智能填充'
+      captions: "支持各类制式文档的智能填充，并支持在线修改数据，导出生成后的文档。"
+
+oauth2_auth:
+  public_key: "BOKvpipe6aM7xn9sh7V3Y3+lYCl20cEwYiihj3d/hkORpyvTC90pMtVfScR0oSpLU2PqctSOvjsFzVpF0JePtGE="  # 客户测试环境：BE5Ov9833ssmHdy5/ixTRJQ4JJH+bMb92LVUmFBs3RGxZXmiaU8AqOV++OaO2DqJrSOpdZZqMM+8CLUCv3b4cog= 生产环境: BF8D+8K8f4yZ6CsEEEoALIguAiuQPyKHLCf+l9JOiWparEoHQ0YhJeG7ob9xzhPxmzvdHuXSnbBZPc4q/Ft5zbI=
+  client_id: "a806eec13b3f4dc0ab6fdb98fda7b2fc"  # 客户测试环境: ffd264ae91694bf1a40a8c492809ccc2  生产环境: a86b59b424b74552b8914dd6ba2e9463
+  base_url: "http://100.64.0.9:55842/api/v1/"  # 客户测试环境: http://one-account-gateway.paasuat.cmbchina.cn  生产环境: http://oa-auth.paas.cmbchina.com
+  access_token_server: "http://100.64.0.9:55842/api/v1/"  # 客户测试环境: http://one-account-gateway.paasuat.cmbchina.cn  生产环境: http://oa-auth.paas.cmbchina.cn
+  authorize_api: "auth-server/auth"
+  access_token_api: "auth-server/token"
+  sign_api_private_key: 'Ev6dYQrht/YP6CFNb/rEbEK97uQRTI31Lrx5kO7OkqM='  # 生产环境: DCujvXFleDATKN8oY9mVrQPh3LdY3s5hKBDgGqTGD10=
+  sign_api_public_key: 'BOKvpipe6aM7xn9sh7V3Y3+lYCl20cEwYiihj3d/hkORpyvTC90pMtVfScR0oSpLU2PqctSOvjsFzVpF0JePtGE='  # 生产环境: BMkTjjmu2wyKNc/+HLjFqHjto9dAjY+HVWXJN4FFiSjLbWTFLEjqvWnVp2/cpnFc03SXD7BuAnfSuaMBnyqBIuI=
+  role_id_secret_key: "595445774f4751784e4755784f474a6c"

@@ -1,0 +1,80 @@
+sys: "gyzq"
+
+logging:
+  level: "info"
+
+webif:
+  debug: false
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "npgPSSyCnWYI16AqRb"
+    db_name: "user_proxy"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 3
+    password: 'npgPSSyCnWYI16AqRb'
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  feature:
+    check_captcha: true
+  auth_common:
+    enable: true
+    app_id: "trident"
+    secret_key: "6326f0c737a543e9aa7bcb88dc0cbaf9"
+    token_expire: 900
+    exclude_domain: true
+
+
+unify_auth:
+  allow_sys_admin_sso: False  # 是否允许系统管理员使用单点登录
+  auto_create_user: True
+  permission:
+    autodoc_overall:
+      admin: "管理员"
+      normal: "普通用户"
+    calliper:
+      normal: "普通用户"
+      admin: "管理员"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_autodoc_overall:
+      app_id: "autodoc"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: ""
+      subpath: "autodoc/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_calliper:
+      app_id: "calliper"
+      secret_key: "hello_calliper"
+      token_expire: 120
+      host: ""
+      subpath: "calliper/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+front_config:
+  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True # 展示用户管理界面
+  password_complexity: True  # 密码复杂度
+  allow_change_password: True  # 修改密码
+  sub_sys_config:
+    overall:
+      open: true
+      title: '全面复核'
+    calliper:
+      open: true
+      title: '文档智能比对'
+
+

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "common.proto";
+
+service MicroService {
+    rpc Handler(RPCRequest) returns (RPCReply) {}
+}

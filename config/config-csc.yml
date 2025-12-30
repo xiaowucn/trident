@@ -1,0 +1,89 @@
+sys: "csc"
+
+logging:
+  level: "info"
+
+webif:
+  debug: False
+  http_port: 8000
+  redirect_subpath: ""
+  postgresql:
+    host: "postgres"
+    port: 5432
+    user: "postgres"
+    password: "VrDJrh0KN109"
+    db_name: "trident"
+    check_interval: 60
+  session:
+    host: "redis"
+    port: 6379
+    db: 1
+    expire_seconds: 86400
+  sqlalchemy:
+    echo: False
+  request_key: "hkx85vMOBSM7M7W" # 加密request body的密钥
+  encrypted_request_routes: # 加密的接口(默认不开)
+    # - 'all'  # 全加密
+    - "/user/login"
+    - "/users"
+    - "/users/[0-9]+"
+  response_key: "0b168d3bb0828b5f6242cb3a9f144a23" # 加密response body的密钥
+  encrypted_response_routes: # 加密的接口(默认不开)
+    # - 'all'  # 全加密
+    - "/user/login"
+    - "/user/me"
+    - "/available-sys"
+  xsrf_cookies: True
+  trust_routes: # 跳过xsrf检查的路由
+    - "/user/login"
+
+unify_auth:
+  auto_create_user: True
+  permission:
+    scriber:
+      remark: "标注"
+      manage_prj: "管理项目"
+      browse: "浏览"
+      manage_mold: "管理Schema"
+      table_identification: "表格管理"
+      # manage_tag: "标签管理"
+      manage_model: "模型管理"
+  auth_self:
+    app_id: "user_proxy"
+    secret_key: "I-do-not-know"
+    token_expire: 120
+  auth_config:
+    auth_pdflux:
+      app_id: "pdflux"
+      secret_key: "show-me-the-money"
+      token_expire: 120
+      host: "http://pdflux"
+      subpath: "pdflux/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+    auth_scriber:
+      app_id: "docker_csc_dev"
+      secret_key: "hello_remarkable"
+      token_expire: 120
+      host: "http://scriber"
+      subpath: "scriber/"
+      auth_api: "api/v1/user/unify-login"
+      logout_api: "api/v1/logout"
+
+cas_auth:
+  server: "https://casgbk.csc108.com"
+  cas_token_session_key: "ticket"
+  cas_username_session_key: "CAS_USERNAME"
+  cas_attributes_session_key: "CAS_ATTRIBUTES"
+  cas_after_login: "/api/v1/get-off?sys=scriber"
+  cas_after_logout: ""
+  login_uri: "/login"
+  logout_uri: "/logout"
+  validate_uri: "/serviceValidate"
+
+front_config:
+  auto_redirect_sub_sys: True # 只有一个子系统，普通用户是否直接跳转到子系统
+  sub_sys_config:
+    scriber:
+      open: true
+      title: '智能文档信息抽取'

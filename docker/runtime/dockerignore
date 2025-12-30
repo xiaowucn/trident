@@ -1,0 +1,9 @@
+*
+.*
+!pyproject.toml
+!uv.lock
+!docker/modify_permission.sh
+*.md
+**/*.md
+**/README
+.python-version
