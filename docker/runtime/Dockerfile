@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM registry.cheftin.cn/hub/ubuntu:24.04
+FROM --platform=$TARGETPLATFORM harbor.wujiaxing.top/library/ubuntu:24.04 
 
 ENV LANG=en_US.UTF-8 \
     PYTHONPATH=/opt/trident/ \
