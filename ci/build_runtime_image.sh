@@ -2,34 +2,33 @@
 
 set -e
 
-# 1. 强制关闭 BuildKit (解决证书报错的关键)
-export DOCKER_BUILDKIT=0
+# 【关键修改 1】必须开启 BuildKit，否则 --mount 语法会报错
+export DOCKER_BUILDKIT=1
 
 IMAGE_VERSION="latest"
-# 注意：旧版构建器不需要这个变量了，依赖宿主机架构
 IMAGE_NAME="trident-py312-runtime-arm64"
 
 # 准备 Dockerfile
 ln -sf docker/runtime/Dockerfile ./
 ln -sf docker/runtime/dockerignore .dockerignore
 
-# 2. 【核心修复】清洗 Dockerfile
-# 如果有 REGISTRY_URL，替换仓库地址
+# 【关键修改 2】替换仓库地址
 if [ -n "${REGISTRY_URL}" ]; then
-    echo "Force updating registry url in Dockerfile to: ${REGISTRY_URL}"
+    echo "Force updating registry url to: ${REGISTRY_URL}"
     sed -i "s|registry.cheftin.cn/hub|${REGISTRY_URL}|g" Dockerfile
     sed -i "s|harbor.wujiaxing.top/library|${REGISTRY_URL}|g" Dockerfile
 fi
 
-# 【新增】删除 Legacy Builder 不支持的 BuildKit 参数
-# 将 "FROM --platform=$TARGETPLATFORM xxx" 替换为 "FROM xxx"
-echo "Removing BuildKit specific flags from Dockerfile..."
+# 【关键修改 3】删除 --platform 参数
+# 即使开启了 BuildKit，在单机 build 模式下 $TARGETPLATFORM 变量有时也为空，会导致报错。
+# 既然你是本机构建（arm64），直接删掉这个参数最稳妥。
+echo "Removing --platform flag from Dockerfile..."
 sed -i 's/--platform=$TARGETPLATFORM //g' Dockerfile
 
 build_image() {
-  echo "Start building image..."
-  # 3. 构建命令：移除了所有不兼容参数，保留 --squash
-  if ! docker build --pull --squash --no-cache --tag="${IMAGE_NAME}:${IMAGE_VERSION}" .; then
+  echo "Start building image with BuildKit..."
+  # 恢复了 --progress=plain 以便查看详细日志
+  if ! docker build --pull --progress=plain --squash --no-cache --tag="${IMAGE_NAME}:${IMAGE_VERSION}" .; then
     echo 'build images error'
     exit 1
   fi
