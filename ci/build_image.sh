@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+# 1. 必须开启 BuildKit (为了支持 --mount 和 --platform)
 export DOCKER_BUILDKIT=1
 
 check_image() {
@@ -17,6 +18,7 @@ check_image() {
 }
 
 build_image() {
+  # 5. 构建命令：使用正确的 BUILD_PLATFORM 变量
   if ! docker build --pull --progress=plain --platform="${BUILD_PLATFORM}" --squash --no-cache \
       --build-arg env="${ENV:=docker}" --tag="${IMAGE_NAME}:${IMAGE_VERSION}" .; then
     echo 'build images error'
@@ -46,7 +48,8 @@ push_registry() {
   fi
 }
 
-BUILD_PLATFORM=${BUILD_PLATFORM:-"linux/amd64"}
+# 【核心修改 1】将默认架构从 linux/amd64 改为 linux/arm64
+BUILD_PLATFORM=${BUILD_PLATFORM:-"linux/arm64"}
 
 IMAGE_NAME=${IMAGE_NAME:-'trident'}
 IMAGE_VERSION="dev"
@@ -59,12 +62,29 @@ case "$ENV" in
   ctsec|gtja|gtja_llm|ht)
     ;;
   *)
-    sed -i '/default-jre/d' docker/Dockerfile
+    # 2. 准备 Dockerfile
+    # 注意：这里需要先准备好文件，才能进行后面的 sed 替换
+    ln -sf docker/Dockerfile ./Dockerfile
+    ln -snf docker/dockerignore ./.dockerignore
+    
+    # 原始逻辑：删除 default-jre
+    sed -i '/default-jre/d' Dockerfile
     ;;
 esac
 
-ln -sf docker/Dockerfile ./Dockerfile
-ln -snf docker/dockerignore ./.dockerignore
+# 【核心修改 2】强制替换 Dockerfile 中的仓库地址 (这步非常关键)
+# 确保 Dockerfile 里的 FROM 能用到你在 GoCD 里配置的 harbor.wujiaxing.top
+if [[ -n "${REGISTRY_URL}" ]]; then
+    echo "Force updating registry url in Dockerfile to: ${REGISTRY_URL}"
+    sed -i "s|registry.cheftin.cn/hub|${REGISTRY_URL}|g" Dockerfile
+    sed -i "s|harbor.wujiaxing.top/library|${REGISTRY_URL}|g" Dockerfile
+fi
+
+# 确保软链存在 (防止 case 分支没走到的情况)
+if [ ! -f Dockerfile ]; then
+    ln -sf docker/Dockerfile ./Dockerfile
+    ln -snf docker/dockerignore ./.dockerignore
+fi
 
 echo -n "${ENV:=docker}_${IMAGE_VERSION}" >.version
 
