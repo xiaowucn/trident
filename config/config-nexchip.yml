@@ -34,7 +34,7 @@ webif:
 unify_auth:
   auto_create_user: True
   show_role_manage: True
-  allow_sys_admin_sso: False # 是否允许系统管理员使用单点登录
+  allow_sys_admin_sso: False  # 是否允许系统管理员使用单点登录
   permission:
     pdflux:
       normal: "普通用户"
@@ -68,14 +68,14 @@ unify_auth:
       subpath: "autodoc/"
       auth_api: "api/v1/user/unify-login"
       logout_api: "api/v1/logout"
-    #auth_calliper:
-    #app_id: "calliper"
-    #secret_key: "hello_calliper"
-    #token_expire: 120
-    #host: ""
-    #subpath: "calliper/"
-    #auth_api: "api/v1/user/unify-login"
-    #logout_api: "api/v1/logout"
+    # auth_calliper:
+    #   app_id: "calliper"
+    #   secret_key: "hello_calliper"
+    #   token_expire: 120
+    #   host: ""
+    #   subpath: "calliper/"
+    #   auth_api: "api/v1/user/unify-login"
+    #   logout_api: "api/v1/logout"
     auth_pdflux:
       app_id: "pfbbackend"
       secret_key: "hello_pfbbackend"
@@ -94,23 +94,22 @@ unify_auth:
       logout_api: "api/v1/logout"
 
 front_config:
-  auto_redirect_sub_sys: False # 只有一个子系统，普通用户是否直接跳转到子系统
-  user_manage: True # 展示用户管理界面
+  auto_redirect_sub_sys: False  # 只有一个子系统，普通用户是否直接跳转到子系统
+  user_manage: True  # 展示用户管理界面
   sub_sys_config:
     scriber:
       open: true
-      title: '文档信息抽取与审核'
+      title: "文档信息抽取与审核"
       captions: "支持对各类长文本及制式表单进行关键信息抽取与内容审核，提升信息处理效率。"
     overall:
       open: true
       title: "文档智能复核"
       captions: "基于大模型技术，为各类文档提供基础错误检查，有效提升报备文件质量，减少因反复修改带来的效率损耗。"
-     pdflux:
+    pdflux:
       open: true
       title: "通用文档结构识别"
       captions: "能够自动识别各类文档结构，从复杂版式 PDF 中高效、准确地提取各类表格数据，并支持转换为 Excel 格式。"
-    #calliper:
-    # open: true
-    # title: "文档内容智能比对"
-    # captions: "自动比对不同版本文档之间的内容差异，以可视化方式清晰呈现变更部分，并支持导出比对结果。"
-
+    # calliper:
+    #   open: true
+    #   title: "文档内容智能比对"
+    #   captions: "自动比对不同版本文档之间的内容差异，以可视化方式清晰呈现变更部分，并支持导出比对结果。"
