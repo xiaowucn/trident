@@ -13,7 +13,7 @@ webif:
     port: 5432
     user: "postgres"
     password: "NVk5wxdKt5QSqzJq"
-    db_name: "trident"
+    db_name: "user_proxy"
     check_interval: 60
   session:
     host: "redis"
